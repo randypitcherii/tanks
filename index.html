@@ -38,12 +38,12 @@ document.body.appendChild(renderer.view);
 renderer.view.style.border = "1px dashed black";
 renderer.backgroundCoor = "0xFFFFFF";
 
-loader.add("./bunny.png").load(setup);
+loader.add("https://github.com/randypitcherii/tanks/tree/test_evg/bunny.png").load(setup);
 
 let pixie;
 let state;
 function setup() {
-   pixie = new Sprite(resources["bunny.png"].texture);
+   pixie = new Sprite(resources["https://github.com/randypitcherii/tanks/tree/test_evg/bunny.png"].texture);
   // pixie = new Sprite
     pixie.x = renderer.view.width/2 - pixie.width/2;
     pixie.y = renderer.view.height/2 - pixie.height/2;
