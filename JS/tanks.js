@@ -361,9 +361,13 @@ down_button.release = () => {
 };
 down_button.setPosition(80,g.stage.height - 60);
 
-g.pointer.tap = () => {
 
-	if(forward_button.state == "up" && down_button.state == "up" && left_button.state == "up" && right_button.state == "up" && switch_ammo_flag == 1 && missle_reloadFinish_flag == true) {
+background.interact = true;
+
+
+background.press = () => {
+
+	if(switch_ammo_flag == 1 && missle_reloadFinish_flag == true) {
 		g.shoot(tankA,tankA.rotation - Math.PI/2,0,0,g.stage,7,bullets,
 			function() {
 				fire_bullet = g.sprite("../images/bullet.png");
@@ -380,7 +384,7 @@ g.pointer.tap = () => {
     			missle_reloadFinish_flag = true;
     		});
     		launch_missileSound.play();  
-    	} else if(forward_button.state == "up" && down_button.state == "up" && left_button.state == "up" && right_button.state == "up" && switch_ammo_flag == -1) {
+    	} else if(switch_ammo_flag == -1) {
     		g.shoot(tankA,tankA.rotation - Math.PI/2,tankA.width * 5/6,0,g.stage,3,bullets,
     			function() {
 
