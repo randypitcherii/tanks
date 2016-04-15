@@ -1,7 +1,7 @@
 "use strict";
 
-var thingsToLoad = ["../images/explorer.png","../fonts/emulogic.ttf","../images/dungeon.png",
-"../images/blob.png","../images/door.png","../images/bunny.png","../sounds/launch_missile.mp3","../sounds/missile_heat.mp3","../sounds/normal_bullets.mp3","../sounds/bullets_hit.mp3","../images/up.png","../images/bullet.png"];
+var thingsToLoad = ["../images/explorer.png","../fonts/emulogic.ttf","../images/dungeon.png","../images/explosion.jpeg",
+"../images/blob.png","../images/door.png","../images/bunny.png","../sounds/launch_missile.mp3","../sounds/missile_heat.mp3","../sounds/normal_bullets.mp3","../sounds/bullets_hit.mp3","../images/up.png","../images/bullet.png","../images/smoke.png","../images/debris.png","../images/monster_boss.png"];
 
 var g = hexi(640,640,setup,thingsToLoad,load);
 
@@ -34,7 +34,8 @@ background = undefined,
 outerBar = undefined,
 innerBar = undefined,
 healthBar = undefined,
-fire_bullet = undefined;
+fire_bullet = undefined,
+monster_boss = undefined;
 
 var missile_reloading_timer = undefined;
 var missle_reloadFinish_flag = true;
@@ -42,6 +43,8 @@ var missle_reloadFinish_flag = true;
 var pointer = undefined;
 
 var switch_ammo_flag = 1;
+
+var dust = undefined;
 
 // this loads stuff before the games start making sure everything is loading properly before starting
 function load() {
@@ -86,7 +89,7 @@ function setup() {
 
 
 
-
+    //monster_boss = []; // ths monster boss!
     //setting up the bullets array (a lot of it ! ) variable
     bullets = [];
 
@@ -120,6 +123,8 @@ enter = keyboard(13),
 backspace = keyboard(8),
 space = keyboard(32),
 button_f = keyboard(70);
+
+
 
     // when 'f' button on keyboard is pressed
     button_f.press = function() {
@@ -183,6 +188,29 @@ button_f = keyboard(70);
     		tankA.vy = 0;
     	}
     };
+
+    //setting up the dust when the healthbar is below a certain value i want to show the smoke puffing out
+    dust = g.particleEmitter(
+	  200,                                   //The interval
+	  () => {                         
+	      g.createParticles(                 //The function
+	      tankB.x + 8,                       //x position
+	      tankB.y - tankB.halfHeight + 8,    //y position
+	      () => g.sprite("../images/smoke.png"),        //Particle sprite
+	      g.stage,                           //The container to add the particles to               
+	      20,                                 //Number of particles
+	      0,                                 //Gravity
+	      false,                              //Random spacing
+	      0, 6.28,                          //Min/max angle
+	      12, 18,                            //Min/max size
+	      1, 2,                              //Min/max speed
+	      0.005, 0.01,                       //Min/max scale speed
+	      0.005, 0.01,                       //Min/max alpha speed
+	      0.05, 0.1                          //Min/max rotation speed
+	      );
+	  }
+	  );
+   // dust.play();
 
 
 
@@ -317,6 +345,7 @@ g.pointer.tap = () => {
 				fire_bullet.rotation = tankA.rotation;
 
 				return fire_bullet;
+				//return g.circle(8,"red");
 			});
 		missle_reloadFinish_flag = false;
     		//trying to implement the wait time
@@ -359,12 +388,23 @@ function play() {
 	g.move(tankA);
 	g.move(bullets); 
 	//g.contain(tankA,g.stage);
+	/*
+		Spawn a monster boss!
+	*/
+	/*
+	var boss =  g.sprite["../images/monster_boss"];
+	boss.health = 300;
+	monster_boss.health = 200;
+	monster.x = g.randomInt(0,14) * background.width;
+	monster_boss.y = 0 - monster_boss.height;
+	*/
 
 	alienTimer++;
     // this is to slowly spawn aliens
     if(alienTimer === alienFrequency) {
 	var alienFrames = ["../images/blob.png"]; // can add more frames so that what should it appear when it dies 
 	var alien = g.sprite(alienFrames);
+	alien.health = 50; // initialising health of 50
 	// this is where u add the states such as alive or something
 	alien.states = {
 		alive: 0
@@ -394,20 +434,43 @@ g.move(aliens);
 	bullets = bullets.filter(
 		function (bullet) {
 			//there is a hit on one of the type of bullets
-			if(bullet.y > background.height - bullet.height || bullet.x > background.width - bullet.width) {
+			if(bullet.y > background.height - (bullet.height/3) || bullet.x > background.width ) {
 				g.remove(bullet);
 				bullet.vy = 0;
 				return false;
 			}
+			//checking when the guy loses
+
+
 			if (g.hitTestRectangle(tankB,bullet)) {
 				g.remove(bullet);
 				if(switch_ammo_flag == 1) { // this is for missile
 					//missile_hitSound.volume = 0.1;
 					missile_hitSound.play();
-					healthBar.inner.width += -5;
+					var damage = -25;
+					if(healthBar.inner.width + damage <= 0) {
+						healthBar.inner.width = 0;
+						g.state = end;
+						console.log("healthBar inner width is " + healthBar.inner.width);
+					} else {
+						healthBar.inner.width += damage ;
+					}
+					
+					if(healthBar.inner.width < 64) {
+						dust.play();
+					}
+					// adding smoke when it is below half health
+
+					g.createParticles(tankB.x, tankB.y, function () {
+						return g.sprite("../images/explosion.jpeg");
+					}, g.stage, 50); // when hitted by rocket output some debris
+
 				} else if(switch_ammo_flag == -1) {
 					healthBar.inner.width += -1;
 					normal_bullets_hitSound.play();
+					g.createParticles(tankB.x, tankB.y, function () {
+						return g.sprite("../images/debris.png");
+					}, g.stage, 50); // when hitted by rocket output some debris
 				}
 				return false; //removing bullets from the function
 			} else {
@@ -443,23 +506,28 @@ g.move(aliens);
 		//like this:
 		//alien.show(1);
 
-		//Play the explosion sound.
-						     //explosionSound.play();
+		var damage = -25;
 
-		//Stop the alien from moving.
-		alien.vy = 0;
+		alien.health += damage;
+		console.log("alien health is " + alien.health);
 
-		//Set `alienAlive` to false so that it can be
-		//removed from the array.
-		alienIsAlive = false;
+		if(alien.health <= 0) {
+			console.log("here");
+				//Stop the alien from moving.
+				alien.vy = 0;
 
-		//Wait for 1 second (1000 milliseconds) then
-		//remove the alien sprite.
-		/*
-		g.wait(1000, function () {
-			return g.remove(alien);
-		});
-	*/	  g.wait(1000, () => g.remove(alien));
+				//Set `alienAlive` to false so that it can be
+				//removed from the array.
+				alienIsAlive = false;
+
+				//Wait for 1 second (1000 milliseconds) then
+				//remove the alien sprite.
+				/*
+				g.wait(1000, function () {
+					return g.remove(alien);
+				});
+	*/	g.wait(1000, () => g.remove(alien));
+}
 
 		//Update the score.
 				   //score += 1;
@@ -492,23 +560,37 @@ aliens = aliens.filter(function (alien) {
 
 	});
 
-/*
-//checking when bullets reaches the background
-bullets = bullets.filter(function (bullet) {
-	var bullets_alive = true;
-	if(bullets.y < background.height - bullets.height) {
-			bullets_alive = false;
-			//g.wait(1000, () => g.remove(alien));
-			g.remove(bullet);
-		};
-		return bullets_alive;
-
-	});
-*/
 
 }
 
 
+/*
+	Function for ending the game 
+	*/
+	function end() {
+
+		g.pause();
+		//console.log("at end");
+		gameOverMessage = g.text("", "48px Futura","black",256,256);
+		gameOverMessage.content = "TANK A WON!"
+		g.wait(3000, () => reset());
+	}
+
+
+	function reset() {
+
+		g.remove(gameOverMessage);
+		healthBar.inner.width = 128;
+		//background.putBottom(tankA,background.width/2,tankA.height);
+		g.stage.putBottom(tankA,-70,-tankA.height);
+				//background.putBottom(tankB,background.width/2,tankA.height);
+				g.stage.putTop(tankB,-70,tankB.height + 5);
+				g.remove(bullets);
+				g.remove(aliens);
+				dust.stop();
+				g.state = play;
+				g.resume();
+			}
 
 
 
