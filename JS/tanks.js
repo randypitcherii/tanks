@@ -1,6 +1,6 @@
 "use strict";
 
-var thingsToLoad = ["../images/explorer.png","../fonts/emulogic.ttf","../images/dungeon.png","../images/explosion.jpeg",
+var thingsToLoad = ["../sounds/dynamite_explosion.wav","../images/dynamite.png","../images/explorer.png","../fonts/emulogic.ttf","../images/dungeon.png","../images/explosion.jpeg",
 "../images/blob.png","../images/door.png","../images/bunny.png","../sounds/launch_missile.mp3","../sounds/missile_heat.mp3","../sounds/normal_bullets.mp3","../sounds/bullets_hit.mp3","../images/up.png","../images/bullet.png","../images/smoke.png","../images/debris.png","../images/monster_boss.png","../sounds/missile_reloading.wav","../images/start_button.png","../images/restart_button.png"];
 
 var g = hexi(640,640,start,thingsToLoad,load);
@@ -36,7 +36,16 @@ innerBar = undefined,
 healthBar = undefined,
 fire_bullet = undefined,
 monster_boss = undefined,
-start_button = undefined;
+start_button = undefined,
+dynamites = undefined,
+outerBar_tankA = undefined,
+innerBar_tankA = undefined,
+healthBar_tankA = undefined;
+
+var dynamite_counter;
+
+var dynamite_max;
+
 
 var missile_reloading_timer = undefined;
 var missle_reloadFinish_flag = true;
@@ -61,8 +70,8 @@ function start() {
 
 	/*
 		When the user clicks it goes to the setup place!
-	*/
-	start_button.release = () => {
+		*/
+		start_button.release = () => {
 		start_button.visible = false; // set it to be not visible!
 		start_button.interact = false; // dont want it to be interacted even though it is invisible
 		setup();
@@ -102,13 +111,49 @@ function setup() {
 
 	healthBar = g.group(outerBar, innerBar);
 	healthBar.inner = innerBar;
-
+					//g.canvas.width - 128;
+					//g.canvas.height-16;
 	healthBar.x = g.canvas.width - 128;
-	healthBar.y = 0;
+	healthBar.y = g.canvas.height-16;
+
+
+	// this is for tankA
+	outerBar_tankA = g.rectangle(128, 16, "black"),
+	innerBar_tankA = g.rectangle(128, 16, "green");
+	healthBar_tankA = g.group(outerBar_tankA, innerBar_tankA);
+	healthBar_tankA.inner = innerBar_tankA;
+	//healthBar_tankA.x = g.canvas.width - 128;
+	//healthBar_tankA.y = 0;
+	//g.stage.putBottom(healthBar_tankA,0,50);
+	healthBar_tankA.x = g.canvas.width - 128;
+	healthBar_tankA.y = 0;
+
 
     // end of creating health bar
 
+    /*
+		Creating dynamites when the tank touches it KA BOOM@!#@!
+		*/
+		dynamite_counter = 0;
+		dynamite_max = 6;
 
+		let spacing = 48;
+		let xOffset = 150;	
+		
+		dynamites = [];
+		for(var i = dynamite_counter; i < dynamite_max; i++) {
+			let dynamite = g.sprite("../images/dynamite.png");
+
+			let x = spacing * i + xOffset;
+			let y = g.randomInt(0,background.height - dynamite.height);
+			dynamite.x = x;
+			dynamite.y = y;
+
+			dynamites.push(dynamite);
+		//background.addChild(dynamite);
+
+	}
+	//g.move(dynamites);
 
 
     //monster_boss = []; // ths monster boss!
@@ -418,6 +463,32 @@ function play() {
 	g.contain(tankA,background);
 	g.move(tankA);
 	g.move(bullets); 
+
+	/*
+			Filtering bombs when touched!
+			*/
+	dynamites = dynamites.filter(function (dynamite) {
+		var dynamite_explode = true;
+		if(g.hitTestRectangle(tankA,dynamite)) {
+
+		dynamite_explode = false; // it touches so remove it!
+			//g.wait(1000, () => g.remove(alien));
+			g.remove(dynamite);
+			healthBar_tankA.inner.width += -30;
+			var explosionSound = g.sound("../sounds/dynamite_explosion.wav");
+			explosionSound.play();
+			g.createParticles(tankA.x, tankA.y, function () {
+						return g.sprite("../images/explosion.jpeg");
+			}, g.stage, 50); // when hitted by rocket output some debris
+
+		}
+		return dynamite_explode;
+
+	});
+
+
+
+
 	//g.contain(tankA,g.stage);
 	/*
 		Spawn a monster boss!
@@ -616,12 +687,12 @@ aliens = aliens.filter(function (alien) {
 	}
 /*
 		To restart the damn game
-*/
+		*/
 
-	function reset() {
+		function reset() {
 
-		g.remove(gameOverMessage);
-		healthBar.inner.width = 128;
+			g.remove(gameOverMessage);
+			healthBar.inner.width = 128;
 		//background.putBottom(tankA,background.width/2,tankA.height);
 		g.stage.putBottom(tankA,-70,-tankA.height);
 				//background.putBottom(tankB,background.width/2,tankA.height);
