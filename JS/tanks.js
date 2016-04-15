@@ -1,7 +1,7 @@
 "use strict";
 
 var thingsToLoad = ["../images/explorer.png","../fonts/emulogic.ttf","../images/dungeon.png","../images/explosion.jpeg",
-"../images/blob.png","../images/door.png","../images/bunny.png","../sounds/launch_missile.mp3","../sounds/missile_heat.mp3","../sounds/normal_bullets.mp3","../sounds/bullets_hit.mp3","../images/up.png","../images/bullet.png","../images/smoke.png","../images/debris.png","../images/monster_boss.png"];
+"../images/blob.png","../images/door.png","../images/bunny.png","../sounds/launch_missile.mp3","../sounds/missile_heat.mp3","../sounds/normal_bullets.mp3","../sounds/bullets_hit.mp3","../images/up.png","../images/bullet.png","../images/smoke.png","../images/debris.png","../images/monster_boss.png","../sounds/missile_reloading.wav"];
 
 var g = hexi(640,640,setup,thingsToLoad,load);
 
@@ -39,6 +39,7 @@ monster_boss = undefined;
 
 var missile_reloading_timer = undefined;
 var missle_reloadFinish_flag = true;
+var missile_reloading_sound = undefined;
 
 var pointer = undefined;
 
@@ -105,7 +106,8 @@ function setup() {
     missile_hitSound = g.sound("../sounds/missile_heat.mp3");
     normal_bullets_launchSound = g.sound("../sounds/normal_bullets.mp3");
     normal_bullets_launchSound.volume = 0.1;
-    normal_bullets_hitSound = g.sound("../sounds/bullets_hit.mp3")
+    normal_bullets_hitSound = g.sound("../sounds/bullets_hit.mp3");
+    missile_reloading_sound = g.sound("../sounds/missile_reloading.wav");
 
     scoreDisplay = g.text("0", "20px emulogic", "#00FF00", 400, 10);
 
@@ -229,10 +231,14 @@ button_f = keyboard(70);
     			});
     		missle_reloadFinish_flag = false;
     		//trying to implement the wait time
-    		g.wait(3000, function () {
+    		g.wait(5000, function () {
     			missle_reloadFinish_flag = true;
     		});
     		launch_missileSound.play(); // this will play the missile sound!
+    		g.wait(1000, function () {
+    			missile_reloading_sound.play();
+    		});
+
     	} else if(switch_ammo_flag == -1) {	//tankA.halfWidth
     		g.shoot(tankA,tankA.rotation - Math.PI/2,tankA.width * 5/6,0,g.stage,3,bullets,
     			function() {
