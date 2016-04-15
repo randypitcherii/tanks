@@ -3,7 +3,7 @@
 var thingsToLoad = ["../sounds/dynamite_explosion.wav","../images/dynamite.png","../images/explorer.png","../fonts/emulogic.ttf","../images/dungeon.png","../images/explosion.jpeg",
 "../images/blob.png","../images/door.png","../images/bunny.png","../sounds/launch_missile.mp3","../sounds/missile_heat.mp3","../sounds/normal_bullets.mp3","../sounds/bullets_hit.mp3","../images/up.png","../images/bullet.png","../images/smoke.png","../images/debris.png","../images/monster_boss.png","../sounds/missile_reloading.wav","../images/start_button.png","../images/restart_button.png"];
 
-var g = hexi(640,640,start,thingsToLoad,load);
+var g = hexi(512,512,start,thingsToLoad,load);
 
 g.scaleToWindow();
 //scaleToWindow(g.view);
@@ -101,9 +101,10 @@ function setup() {
 	tankB.anchor.y = 0.5;
 
 	tankB.rotation = Math.PI;
-
-	g.stage.putBottom(tankA,-70,-tankA.height);
-	g.stage.putTop(tankB,-70,tankB.height + 5);
+	g.stage.putBottom(tankA,0,-tankA.height);
+	g.stage.putTop(tankB,0,tankB.height + 5);
+	//g.stage.putBottom(tankA,-70,-tankA.height);
+	//g.stage.putTop(tankB,-70,tankB.height + 5);
 
 	//creating the health bar
 	outerBar = g.rectangle(128, 16, "black"),
@@ -113,8 +114,8 @@ function setup() {
 	healthBar.inner = innerBar;
 					//g.canvas.width - 128;
 					//g.canvas.height-16;
-	healthBar.x = g.canvas.width - 128;
-	healthBar.y = g.canvas.height-16;
+					healthBar.x = g.canvas.width - 128;
+					healthBar.y = g.canvas.height-16;
 
 
 	// this is for tankA
@@ -325,6 +326,7 @@ button_f = keyboard(70);
 /*
   FOR MOBILE
   */
+  /*
   var forward_button = g.button([
   	"../images/up.png",
   	]);
@@ -443,6 +445,7 @@ background.press = () => {
     		normal_bullets_launchSound.play();
     	}
     };
+    */
 
 /*
 END OF FOR MOBILE VERSION
@@ -467,9 +470,9 @@ function play() {
 	/*
 			Filtering bombs when touched!
 			*/
-	dynamites = dynamites.filter(function (dynamite) {
-		var dynamite_explode = true;
-		if(g.hitTestRectangle(tankA,dynamite)) {
+			dynamites = dynamites.filter(function (dynamite) {
+				var dynamite_explode = true;
+				if(g.hitTestRectangle(tankA,dynamite)) {
 
 		dynamite_explode = false; // it touches so remove it!
 			//g.wait(1000, () => g.remove(alien));
@@ -478,10 +481,10 @@ function play() {
 			var explosionSound = g.sound("../sounds/dynamite_explosion.wav");
 			explosionSound.play();
 			g.createParticles(tankA.x, tankA.y, function () {
-						return g.sprite("../images/explosion.jpeg");
+				return g.sprite("../images/explosion.jpeg");
 			}, g.stage, 50); // when hitted by rocket output some debris
 
-		}
+		} 
 		return dynamite_explode;
 
 	});
@@ -673,9 +676,9 @@ aliens = aliens.filter(function (alien) {
 
 		g.pause();
 		//console.log("at end");
-		gameOverMessage = g.text("", "48px Futura","black",background.width/2 - 20,background.height/2 + 20);
+		gameOverMessage = g.text("", "48px Futura","black",background.width/2,background.height/2 + 20);
 		//gameOverMessage = background.text("", "48px Futura","black",background.width/2,bac);
-		gameOverMessage.content = "TANK A WON!";
+		gameOverMessage.content = "YOU WON!";
 		var restart_button = g.button(["../images/restart_button.png"]);
 		background.putCenter(restart_button,0,0);
 		restart_button.release = () => {
@@ -685,7 +688,7 @@ aliens = aliens.filter(function (alien) {
 		};
 		//g.wait(3000, () => reset());
 	}
-/*
+		/*
 		To restart the damn game
 		*/
 
