@@ -1,7 +1,7 @@
 "use strict";
 
 var thingsToLoad = ["../images/explorer.png","../fonts/emulogic.ttf","../images/dungeon.png","../images/explosion.jpeg",
-"../images/blob.png","../images/door.png","../images/bunny.png","../sounds/launch_missile.mp3","../sounds/missile_heat.mp3","../sounds/normal_bullets.mp3","../sounds/bullets_hit.mp3","../images/up.png","../images/bullet.png","../images/smoke.png","../images/debris.png","../images/monster_boss.png","../sounds/missile_reloading.wav","../images/start_button.png"];
+"../images/blob.png","../images/door.png","../images/bunny.png","../sounds/launch_missile.mp3","../sounds/missile_heat.mp3","../sounds/normal_bullets.mp3","../sounds/bullets_hit.mp3","../images/up.png","../images/bullet.png","../images/smoke.png","../images/debris.png","../images/monster_boss.png","../sounds/missile_reloading.wav","../images/start_button.png","../images/restart_button.png"];
 
 var g = hexi(640,640,start,thingsToLoad,load);
 
@@ -53,11 +53,15 @@ function load() {
 	g.loadingBar();
 }
 
+// start here
 function start() {
 	start_button = g.button(["../images/start_button.png"]);
 	start_button.visible = true;
-	g.stage.putCenter(start_button,g.stage.width/2,g.stage.height/2);
+	g.stage.putCenter(start_button,g.stage.width/2 - 80,g.stage.height/2);
 
+	/*
+		When the user clicks it goes to the setup place!
+	*/
 	start_button.release = () => {
 		start_button.visible = false; // set it to be not visible!
 		start_button.interact = false; // dont want it to be interacted even though it is invisible
@@ -594,11 +598,21 @@ aliens = aliens.filter(function (alien) {
 
 		g.pause();
 		//console.log("at end");
-		gameOverMessage = g.text("", "48px Futura","black",256,256);
-		gameOverMessage.content = "TANK A WON!"
-		g.wait(3000, () => reset());
+		gameOverMessage = g.text("", "48px Futura","black",background.width/2 - 20,background.height/2 + 20);
+		//gameOverMessage = background.text("", "48px Futura","black",background.width/2,bac);
+		gameOverMessage.content = "TANK A WON!";
+		var restart_button = g.button(["../images/restart_button.png"]);
+		background.putCenter(restart_button,0,0);
+		restart_button.release = () => {
+			restart_button.visible = false;
+			restart_button.interact = false;
+			//g.state = reset;
+		};
+		//g.wait(3000, () => reset());
 	}
-
+/*
+		To restart the damn game
+*/
 
 	function reset() {
 
