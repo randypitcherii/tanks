@@ -606,7 +606,7 @@ aliens = aliens.filter(function (alien) {
 		restart_button.release = () => {
 			restart_button.visible = false;
 			restart_button.interact = false;
-			//g.state = reset;
+			reset();
 		};
 		//g.wait(3000, () => reset());
 	}
