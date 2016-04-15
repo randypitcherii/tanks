@@ -1,9 +1,9 @@
 "use strict";
 
 var thingsToLoad = ["../images/explorer.png","../fonts/emulogic.ttf","../images/dungeon.png","../images/explosion.jpeg",
-"../images/blob.png","../images/door.png","../images/bunny.png","../sounds/launch_missile.mp3","../sounds/missile_heat.mp3","../sounds/normal_bullets.mp3","../sounds/bullets_hit.mp3","../images/up.png","../images/bullet.png","../images/smoke.png","../images/debris.png","../images/monster_boss.png","../sounds/missile_reloading.wav"];
+"../images/blob.png","../images/door.png","../images/bunny.png","../sounds/launch_missile.mp3","../sounds/missile_heat.mp3","../sounds/normal_bullets.mp3","../sounds/bullets_hit.mp3","../images/up.png","../images/bullet.png","../images/smoke.png","../images/debris.png","../images/monster_boss.png","../sounds/missile_reloading.wav","../images/start_button.png"];
 
-var g = hexi(640,640,setup,thingsToLoad,load);
+var g = hexi(640,640,start,thingsToLoad,load);
 
 g.scaleToWindow();
 //scaleToWindow(g.view);
@@ -35,7 +35,8 @@ outerBar = undefined,
 innerBar = undefined,
 healthBar = undefined,
 fire_bullet = undefined,
-monster_boss = undefined;
+monster_boss = undefined,
+start_button = undefined;
 
 var missile_reloading_timer = undefined;
 var missle_reloadFinish_flag = true;
@@ -52,7 +53,23 @@ function load() {
 	g.loadingBar();
 }
 
+function start() {
+	start_button = g.button(["../images/start_button.png"]);
+	start_button.visible = true;
+	g.stage.putCenter(start_button,g.stage.width/2,g.stage.height/2);
+
+	start_button.release = () => {
+		start_button.visible = false; // set it to be not visible!
+		start_button.interact = false; // dont want it to be interacted even though it is invisible
+		setup();
+	};
+
+}
+
 function setup() {
+
+	
+
 	background = g.sprite("../images/dungeon.png");
 
 	tankA = g.sprite("../images/user_tank_ed1.png");
@@ -396,7 +413,7 @@ function play() {
 	//g.contain(tankA,g.stage);
 	/*
 		Spawn a monster boss!
-	*/
+		*/
 	/*
 	var boss =  g.sprite["../images/monster_boss"];
 	boss.health = 300;
