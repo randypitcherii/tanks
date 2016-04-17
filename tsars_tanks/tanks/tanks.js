@@ -192,7 +192,7 @@ function setup() {
 
 //fire missle from whatever tank
 function fire(tank) {
-    console.log("tank shooted!");
+    //console.log("ME shooted!");
     tank.missle_fired = true;
     if(tank.switch_ammo_flag == 1) {
 	g.shoot(tank,tank.rotation - Math.PI/2,tank.halfWidth,0,g.stage,7,bullets,
@@ -238,7 +238,7 @@ function updateEnemy(enemyX, enemyY, enemyRotation, enemyMissleType, enemyShoot)
     
     // if enemy shooted, fire the missle 
     if (enemyShoot) {	
-	console.log("enemy shooted!!");
+	//console.log("enemy shooted!!");
 	fire(tankB);
     }
 }
@@ -328,6 +328,49 @@ function play() {
 		    
 		    //Remove the bullet from the `bullets array.
 				   return false;
+		} else if (g.hitTestRectangle(tankB, bullet)) {
+
+		    //Remove the bullet sprite.
+					       g.remove(bullet);
+					   
+					   
+		    
+		    //Show the alien's `destroyed` state.
+							 //alien.show(alien.states.destroyed);
+
+		//You could alternatively use the frame number,
+		//like this:
+		//alien.show(1);
+
+		//Play the explosion sound.
+						     //explosionSound.play();
+
+		//Stop the alien from moving.
+							 alien.vy = 0;
+
+		//Set `alienAlive` to false so that it can be
+		//removed from the array.
+					 alienIsAlive = false;
+
+		//Wait for 1 second (1000 milliseconds) then
+		//remove the alien sprite.
+					  g.wait(1000, function () {
+					      return g.remove(alien);
+					  });
+
+		//Update the score.
+				   //score += 1;
+		    
+		    //Remove the bullet from the `bullets array.
+				   return false;
+
+
+
+
+
+
+
+
 		} else {
 
 		//If there's no collision, keep the bullet in the
@@ -344,7 +387,7 @@ function play() {
     });
 
     //update enemy tak that would mirror tankA movements for now
-    updateEnemy(tankA.x, tankA.y, tankA.rotation, tankA.switch_ammo_flag, tankA.missle_fired);
+    updateEnemy(tankA.x, tankA.y, tankA.rotation, tankA.switch_ammo_flag, tankA.missle_fired)
 
     tankA.missle_fired = false;
 
