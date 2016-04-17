@@ -10,7 +10,7 @@ var host = (process.env.VCAP_APP_HOST || 'localhost');
 
 //handle the default request
 app.get('/', function(req, res) {
-	res.sendFile(__dirname + 'public/html/tanks.html');
+	res.sendFile(__dirname + '/public/html/index.html');
 });
 
 //establish access to public folder
