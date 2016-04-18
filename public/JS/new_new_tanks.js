@@ -1,6 +1,6 @@
 "use strict";
 
-var thingsToLoad = ["../sounds/explosion.mp3","../images/dynamite.png","../images/explorer.png","../fonts/emulogic.ttf","../images/dungeon.png","../images/explosion.jpeg","../images/blob.png","../images/door.png","../images/bunny.png","../sounds/launch_missile.mp3","../sounds/missile_heat.mp3","../sounds/normal_bullets.mp3","../sounds/bullets_hit.mp3","../images/up.png","../images/bullet.png","../images/smoke.png","../images/debris.png","../images/monster_boss.png","../sounds/missile_reloading.wav","../images/start_button.png","../images/restart_button.png"];
+var thingsToLoad = ["../images/wall.jpg","../sounds/explosion.mp3","../images/dynamite.png","../images/explorer.png","../fonts/emulogic.ttf","../images/dungeon.png","../images/explosion.jpeg","../images/blob.png","../images/door.png","../images/bunny.png","../sounds/launch_missile.mp3","../sounds/missile_heat.mp3","../sounds/normal_bullets.mp3","../sounds/bullets_hit.mp3","../images/up.png","../images/bullet.png","../images/smoke.png","../images/debris.png","../images/monster_boss.png","../sounds/missile_reloading.wav","../images/start_button.png","../images/restart_button.png"];
 
 var g = hexi(512,512,start,thingsToLoad,load);
 
@@ -45,7 +45,9 @@ var tankA = undefined,
     missile_reloading_sound = undefined,
     pointer = undefined,
     //switch_ammo_flag = 1,
-    dust = undefined;
+    dust = undefined,
+    wall = undefined,
+    walls = undefined;
 
 // this loads stuff before the games start making sure everything is loading properly before starting
 function load() {
@@ -132,7 +134,7 @@ function setup() {
     healthBar_tankA.x = g.canvas.width - tankA_outerBar.width;
     healthBar_tankA.y = g.canvas.height - tankA_outerBar.height;
 
-    
+    createWall();
 
     // end of creating health bar
 
@@ -527,6 +529,18 @@ function updateEnemy(enemyX, enemyY, enemyRotation, enemyMissleType, enemyShoot)
 
 function play() {
     g.contain(tankA,background);
+
+      let tankA_wall_collision = g.hit(tankA,walls,true,false,false,
+        function(collision,platform) {
+          if(collision == "right") {
+            tankA.vx = 0;
+          } else if (collision == "left") {
+            tankA.vy = 0;
+          }
+          console.log("collsiion side is " + collision);
+        }
+        );
+
     g.move(tankA);
     
     g.move(bullets); 
@@ -587,6 +601,29 @@ function play() {
 	return dynamite_explode;
 
     });
+
+/*
+  FILTERING THE WALL
+*/
+
+  
+  walls = walls.filter(function (wall) {
+    var wall_alive = true;
+    bullets = bullets.filter(
+      function (bullet) {
+        if(g.hitTestRectangle(wall,bullet)) {
+          g.remove(bullet);
+          g.remove(wall);
+          wall_alive = false;
+          return false;
+
+        } else {
+          return true;
+        }
+      });
+    return wall_alive;
+  });
+
 
 
 
@@ -937,7 +974,124 @@ aliens = aliens.filter(function (alien) {
 	    //g.wait(1000, () => g.remove(alien));
 	    g.remove(alien);
 	};
+
 	
 
 
 */
+/*
+  Creating obstacles
+*/
+
+function createWall() {
+  walls = [];
+
+       //NUMBER 1 wall
+       for(var i = 0 ; i < 10; i++) {
+        let wall = g.sprite("../images/wall.jpg");
+
+        let x = 8 * i;
+         // avoding collision
+
+        // let y = g.randomInt(0,0);
+        let y = 100;
+        wall.x = x;
+        wall.y = y
+        walls.push(wall);
+      }
+      // NUBMER 2 wall
+      for(var i = 0; i < 60; i++) {
+       let wall = g.sprite("../images/wall.jpg");
+
+       let x = 80;
+         // avoding collision
+
+        // let y = g.randomInt(0,0);
+        let y = (100) +  6 * i;
+        wall.x = x;
+        wall.y = y
+        walls.push(wall);
+
+      }
+      // NUMBER 3 wall
+      for(var i = 0 ; i < 60 ; i++) {
+       let wall = g.sprite("../images/wall.jpg");
+       let x = 88;
+       let y = (100) +  6 * i;
+       wall.x = x;
+       wall.y = y
+       walls.push(wall);
+     }
+
+     //NUMBER 4 wall
+       for(var i = 0; i < 40; i++) {
+       let wall = g.sprite("../images/wall.jpg");
+
+       let x = 150;
+         // avoding collision
+
+        // let y = g.randomInt(0,0);
+        let y = (100) +  6 * i;
+        wall.x = x;
+        wall.y = y
+        walls.push(wall);
+
+      }
+      // NUMBER 5 wall
+      for(var i = 0 ; i < 40 ; i++) {
+       let wall = g.sprite("../images/wall.jpg");
+       let x = 158;
+       let y = (100) +  6 * i;
+       wall.x = x;
+       wall.y = y
+       walls.push(wall);
+     }
+
+     //NUMBER 6 wall
+       for(var i = 0; i < 40; i++) {
+       let wall = g.sprite("../images/wall.jpg");
+
+       let x = background.width - 150;
+         // avoding collision
+
+        // let y = g.randomInt(0,0);
+        let y = (100) +  6 * i;
+        wall.x = x;
+        wall.y = y
+        walls.push(wall);
+
+      }
+      // NUMBER 7  wall
+      for(var i = 0 ; i < 40 ; i++) {
+       let wall = g.sprite("../images/wall.jpg");
+       let x = background.width - 158;
+       let y = (100) +  6 * i;
+       wall.x = x;
+       wall.y = y
+       walls.push(wall);
+     }
+     // NUMBER 8 wall
+     for(var i = 0 ; i < 18 ; i++) {
+      let wall = g.sprite("../images/wall.jpg");
+      let x = (200) + 8 * i;
+      let y = background.height/2 - 6;
+       wall.x = x;
+       wall.y = y
+       walls.push(wall);
+
+     }
+     for(var i = 0 ; i < 18 ; i++) {
+      let wall = g.sprite("../images/wall.jpg");
+      let x = (200) + 8 * i;
+      let y = background.height/2;
+       wall.x = x;
+       wall.y = y
+       walls.push(wall);
+
+     }
+
+
+
+}
+
+
