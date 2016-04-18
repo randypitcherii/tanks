@@ -208,12 +208,12 @@ function fire(tank) {
 	g.shoot(tank,tank.rotation - Math.PI/2,tank.halfWidth,0,g.stage,3,bullets,
 		function() {
 
-		    bunny = g.sprite("../images/bunny.png");
+		    //bunny = g.sprite("../images/bunny.png");
 		    //bunny.width = tankA.width ;
 		    //bunny.height = tankA.height ;
-		    bunny.rotation = tank.rotation;
+		    //bunny.rotation = tank.rotation;
 		    
-		    return bunny;
+		    return g.circle(8,"red");
 		});
     }
     // can play shooting sound here if u want when the space key is pressed!
