@@ -1,6 +1,6 @@
 "use strict";
 
-var thingsToLoad = ["../sounds/dynamite_explosion.wav","../images/dynamite.png","../images/explorer.png","../fonts/emulogic.ttf","../images/dungeon.png","../images/explosion.jpeg",
+var thingsToLoad = ["../images/wall.jpg","../sounds/dynamite_explosion.wav","../images/dynamite.png","../images/explorer.png","../fonts/emulogic.ttf","../images/dungeon.png","../images/explosion.jpeg",
 "../images/blob.png","../images/door.png","../images/bunny.png","../sounds/launch_missile.mp3","../sounds/missile_heat.mp3","../sounds/normal_bullets.mp3","../sounds/bullets_hit.mp3","../images/up.png","../images/bullet.png","../images/smoke.png","../images/debris.png","../images/monster_boss.png","../sounds/missile_reloading.wav","../images/start_button.png","../images/restart_button.png"];
 
 var g = hexi(512,512,start,thingsToLoad,load);
