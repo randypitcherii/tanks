@@ -109,7 +109,7 @@ function downMove(tank, isLocal) {
         tank.vy = 5;
         tank.vx = 0;
 	} else {
-		tank.rotation = Math.PI;
+		tank.rotation = 0;
         tank.vy = -5;
         tank.vx = 0;
 	}
@@ -121,7 +121,7 @@ function downMove(tank, isLocal) {
  * var tank - tank object to be moved
  * var isLocal - boolean. True means tank is the local tank, false means tank is opponent 
  */
-function downMove(tank, isLocal) {
+function downRelease(tank, isLocal) {
 	tank.vy = 0;
 }
 
@@ -158,7 +158,7 @@ function spaceMove(tank) {
  * var tank - tank object to switch the ammo flag for.
  */
 function f_buttonMove(tank) {
-	tank.switch_ammo_flag;
+	tank.switch_ammo_flag *= -1;
 }
 
 /**

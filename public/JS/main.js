@@ -422,6 +422,7 @@ function play() {
     );
 
     g.move(tankA);
+    g.move(tankB);
 
     g.move(bullets);
 
