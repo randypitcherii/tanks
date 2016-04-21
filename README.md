@@ -1,6 +1,8 @@
 # tanks
 Repo for our tanks web application
 Features still needed to be fixed or added
-- more donald trump walls
-- Something wrong with collection detection on tankB which makes it not synchroniz across the other browser
+- need to add walls
+
+Features implemented
+- Should be ablle to move smoothly for both tankA and tankB
 
