@@ -297,8 +297,13 @@ function play() {
 		if (g.hitTestRectangle(tankB,bullet)) {
 			g.remove(bullet);
 			console.log("hitted with red dot");
-			healthBar_tankB.inner.width += -5;
-			console.log("health left is " + healthBar_tankB.inner.width);
+			var damage = -5;
+			//console.log("damage done is " + (healthBar_tankB.inner.width + damage));
+			if(healthBar_tankB.inner.width + damage <= 0) {
+				healthBar_tankB.inner.width = 0;
+			} else {
+				healthBar_tankB.inner.width += damage;
+			}
 			normal_bullets_hitSound.play();
 			g.createParticles(tankB.x, tankB.y, function () {
 				return g.sprite("../images/debris.png");
@@ -309,7 +314,13 @@ function play() {
 		} else if (g.hitTestRectangle(tankA,bullet)) {
 			g.remove(bullet);
 			console.log("hitted with red dot");
-			healthBar_tankA.inner.width += -5;
+			var damage = -5;
+			//console.log("damage done is " + (healthBar_tankB.inner.width + damage));
+			if(healthBar_tankA.inner.width + damage <= 0) {
+				healthBar_tankA.inner.width = 0;
+			} else {
+				healthBar_tankA.inner.width += damage;
+			}
 			//console.log("health left is " + healthBar_tankA.inner.width);
 			normal_bullets_hitSound.play();
 			g.createParticles(tankA.x, tankA.y, function () {
@@ -349,7 +360,13 @@ function play() {
 		if (g.hitTestRectangle(tankB,fire_bullet)) {
 			g.remove(fire_bullet);
 			console.log("hitted with fire_bullet");
-			healthBar_tankB.inner.width += -25;
+			var damage = -25;
+			//console.log("damage done is " + (healthBar_tankB.inner.width + damage));
+			if(healthBar_tankB.inner.width + damage <= 0) {
+				healthBar_tankB.inner.width = 0;
+			} else {
+				healthBar_tankB.inner.width += damage;
+			}
 			missile_hitSound.play();
 			console.log("health left is " + healthBar_tankB.inner.width);
 			g.createParticles(tankB.x, tankB.y,
@@ -363,7 +380,13 @@ function play() {
 		} else if (g.hitTestRectangle(tankA,fire_bullet)) {
 			g.remove(fire_bullet);
 			console.log("hitted with fire_bullet");
-			healthBar_tankA.inner.width += -25;
+			var damage = -25;
+
+			if(healthBar_tankA.inner.width + damage <= 0) {
+				healthBar_tankA.inner.width = 0;
+			} else {
+				healthBar_tankA.inner.width += damage;
+			}
 			missile_hitSound.play();
 				console.log("health left is " + healthBar_tankB.inner.width);
 			g.createParticles(tankA.x, tankA.y,
@@ -383,7 +406,7 @@ function play() {
 
 
 	
-	/*
+	
 	if(healthBar_tankB.inner.width <= 0 && healthBar_tankA.inner.width <= 0) {
 		healthBar_tankA.inner.width = 0;
 		healthBar_tankB.inner.width = 0;
@@ -395,7 +418,8 @@ function play() {
 		healthBar_tankA.inner.width = 0;
 		g.state = end("YOU LOST!!!");
 	}
-	*/
+	
+	/*
 	if (healthBar_tankB.inner.width > healthBar_tankB_prev && healthBar_tankA.inner.width > healthBar_tankA_prev) {
 		healthBar_tankA.inner.width = 0;
 		healthBar_tankB.inner.width = 0;
@@ -407,6 +431,7 @@ function play() {
 			healthBar_tankB.inner.width = 0;
 		g.state = end("YOU WON!!!");
 	} 
+	*/
 
 	healthBar_tankA_prev = healthBar_tankA.inner.width
 	healthBar_tankB_prev = healthBar_tankB.inner.width;
@@ -419,14 +444,16 @@ function play() {
    Function for ending the game 
    */
 function end(message) {
-
+	//message ="what"
 	g.pause();
+	
 	//console.log("at end");
 	gameOverMessage = g.text("", "48px Futura","black",g.stage.width/2 - 120, g.stage.width/2 + 20);
 	//gameOverMessage = background.text("", "48px Futura","black",background.width/2,bac);
 	gameOverMessage.content = message;
 	var restart_button = g.button(["../images/restart_button.png"]);
 	g.stage.putCenter(restart_button,0,0);
+
 	restart_button.release = () => {
 		restart_button.visible = false;
 		restart_button.interact = false;
