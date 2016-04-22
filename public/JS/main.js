@@ -39,7 +39,8 @@ var background = undefined,
     gameOverMessage = undefined,
     start_button = undefined,
     healthBar_tankA_prev = undefined,
-    healthBar_tankB_prev = undefined;
+    healthBar_tankB_prev = undefined,
+    walls = undefined;
 
 
 function load() {
@@ -155,6 +156,8 @@ function setup() {
 
 	missile_hitSound.volume = 0.4;
 	missile_reloading_sound = g.sound("../sounds/missile_reloading.wav");
+
+	createWall();
 	initTankControls();    
 
 	/*
@@ -265,6 +268,27 @@ function setup() {
 
 function play() {
 	//console.log("the rotation in playing mode " + turretA.rotation);
+
+	let tankA_wall_collision = g.hit(tankA, walls, true, false, false,
+			function(collision, platform) {
+				if (collision == "right") {
+					//tankA.vx = 0;
+				} else if (collision == "left") {
+					//tankA.vy = 0;
+				}
+				console.log("collsiion side is " + collision);
+			}
+			);
+	let tankB_wall_collision = g.hit(tankB, walls, true, false, false,
+			function(collision, platform) {
+				if (collision == "right") {
+					//tankB.vx = 0;
+				} else if (collision == "left") {
+					//tankB.vy = 0;
+				}
+				console.log("collsiion side is " + collision);
+			}
+			);
 	g.move(tankA);
 	g.move(tankB);
 	//g.move(bullets); 
@@ -273,6 +297,7 @@ function play() {
 	g.contain(turretA, g.stage);
 	g.contain(tankB, g.stage);
 	g.contain(turretB, g.stage);
+
 
 	/*
 	   collision detection for bullets and tanks
@@ -475,6 +500,7 @@ function reset() {
 	g.stage.putTop(tankB);
 	//  console.log("the initial tank A rotaton is " + tankA.	);
 	tankB.rotation = Math.PI;
+	g.remove(walls);
 
 
 	//background.putBottom(tankA,background.width/2,tankA.height);
@@ -486,7 +512,7 @@ function reset() {
 	// g.remove(aliens);
 	//g.remove(walls);
 	//dust.stop();
-	//  createWall();
+	 createWall();
 
 
 
@@ -579,4 +605,68 @@ function fire(tank) {
 		normal_bullets_launchSound.play();
 	}
 }
+function createWall() {
+		walls = [];
+
+		// NUBMER 2 wall
+		for (var i = 0; i < 40; i++) {
+			//let wall = g.sprite("../images/wall.jpg");
+			let wall =  g.rectangle(2,2, "brown");
+			let x = 1/4*g.stage.width;
+			// avoding collision
+
+			// let y = g.randomInt(0,0);
+			let y = (1/4*g.stage.height) + 6 * i;
+			wall.x = x;
+			wall.y = y
+				walls.push(wall);
+
+		}
+		// NUMBER 3 wall
+		for (var i = 0; i < 40; i++) {
+				let wall =  g.rectangle(2,2, "brown");
+			let x = 1/4*g.stage.width + 8;
+			let y = (1/4*g.stage.height) + 6 * i;
+			wall.x = x;
+			wall.y = y
+				walls.push(wall);
+		}
+
+		//NUMBER 6 wall
+		for (var i = 0; i < 40; i++) {
+				let wall =  g.rectangle(2,2, "brown");
+
+			let x = g.stage.width - (g.stage.width*1/4);
+			// avoding collision
+
+			// let y = g.randomInt(0,0);
+			let y = (1/4*g.stage.height) + 6 * i;
+			wall.x = x;
+			wall.y = y
+				walls.push(wall);
+
+		}
+		// console.log("walls length is " + walls.length );
+		// NUMBER 7  wall
+		for (var i = 0; i < 40; i++) {
+				let wall =  g.rectangle(2,2, "brown");
+			let x = g.stage.width - (g.stage.width*1/4) - 8;
+			let y = (1/4*g.stage.height) + 6 * i;
+			wall.x = x;
+			wall.y = y
+				walls.push(wall);
+		}
+		for (var i = 0; i < 40; i++) {
+				let wall =  g.rectangle(2,2, "brown");
+			let x = g.stage.width - (g.stage.width*1/4) - 8;
+			let y = (1/4*g.stage.height) + 6 * i;
+			wall.x = x;
+			wall.y = y
+				walls.push(wall);
+		}
+
+
+
+
+	}
 
