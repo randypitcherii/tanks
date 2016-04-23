@@ -1,5 +1,5 @@
 //get name ID for this session.
-var name = prompt("Enter username:");
+var name = $("#gameTitle").text().split("'")[0];
 if (name == "") {
     name = "" + Math.random();
 }

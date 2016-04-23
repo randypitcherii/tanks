@@ -17,9 +17,6 @@ module.exports = function(passport) {
 	});
 
 
-
-
-
 	//signup
 	passport.use('local-signup', new localStrategy({
 		usernameField : 'username',
@@ -46,6 +43,8 @@ module.exports = function(passport) {
 					//add user info
 					newUser.username = username;
 					newUser.password = newUser.generateHash(password);
+					newUser.activeGame = false;
+					newUser.hasOpponent = false;
 
 					//save user
 					newUser.save(function(err) {
@@ -59,7 +58,6 @@ module.exports = function(passport) {
 			});
 		});
 	}));
-
 
 
 	//login
@@ -88,8 +86,16 @@ module.exports = function(passport) {
 				return done(null, false, req.flash('loginMessage', 'Incorrect password.'));
 			}
 
-			//user is found
-			return done(null, user);
+			//user is found. Set activeGame to false and continut
+			user.activeGame = false;
+			user.hasOpponent = false;
+			user.save(function(err) {
+				if (err) {
+					throw err;
+				}
+
+				return done(null, user);
+			});
 		});
 	}));
 };

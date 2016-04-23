@@ -1,3 +1,5 @@
+var User = require('../app/models/user');
+
 module.exports = function(app, passport) {
 	//homepage
 	app.get('/', function(req, res) {
@@ -34,6 +36,42 @@ module.exports = function(app, passport) {
 	app.get('/profile', isLoggedIn, function(req, res) {
 		res.render('profile.ejs', {
 			user : req.user //get the user out of session and pass to template
+		});
+	});
+
+	//create game (make sure they're logged in)
+	app.get('/createGame', isLoggedIn, function(req, res) {
+		req.user.activeGame = true;
+		req.user.save(function(err) {
+			res.render('createGame.ejs', {
+				user : req.user, //get the user out of session and pass to template
+			});
+		});
+	});
+
+	//see available games (make sure they're logged in)
+	app.get('/ongoingGames', isLoggedIn, function(req, res) {
+		req.user.activeGame = true;
+		req.user.save(function(err) {
+			res.render('ongoingGames.ejs', {
+				user : req.user, //get the user out of session and pass to template
+			});
+		});
+	});
+
+	//see available games (make sure they're logged in)
+	app.get('/getGames', isLoggedIn, function(req, res) {
+		User.find({'activeGame' : true, 'hasOpponent' : false}, 'username', 
+			function(err, docs) {
+				res.send(docs);
+		});
+	});
+
+	//end game
+	app.get('/endGame', isLoggedIn, function(req, res) {
+		req.user.activeGame = false;
+		req.user.save(function(err) {
+			res.redirect('/profile');
 		});
 	});
 

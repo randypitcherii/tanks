@@ -1,0 +1,39 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8">
+    <title>Tsars Tanks!</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <style>
+        body { 
+            background-color: #263238; 
+        }
+        .container-fluid {
+            background-color: #EEEEEE;
+            padding: 10px;
+        }
+        h1 {
+            margin : 0px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid row">
+        <div class="col-sm-4">
+            <h1 id="gameTitle"><%= user.username %>'s game</h1>
+        </div>
+        <div class="col-sm-8">
+            <button class="btn btn-lg btn-danger pull-right">End game</button>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+    <script src="JS/hexi.js"></script>
+    <script src="JS/pixi.js"></script>
+    <script src="JS/modules.js"></script>
+    <script src="JS/core.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- Main application file -->
+    <script src="JS/tankMovement.js"></script>
+    <script src="JS/serverCommunication.js"></script>
+    <script src="JS/main.js"></script>
+</body>

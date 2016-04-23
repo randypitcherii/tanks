@@ -4,6 +4,7 @@
     <title>Tanks!</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
     <style>
         body { 
             padding-top:80px;
@@ -11,22 +12,26 @@
         }
     </style>
 </head>
-<div class="container">
+<div class="container row" ng-app="app" ng-controller="getGames">
     <div class="jumbotron col-md-8 col-md-offset-2 col-xs-12">
         <div class="page-header text-center">
             <h1>
                 <span class="fa fa-star"></span> 
-                Hello <%= user.username %> 
+                Available Games
                 <span class="fa fa-star"></span>
             </h1>
         </div>
 
-        <div class="row text-center">
-            <a href="/createGame" class="btn btn-lg btn-primary">Create Game</a>
-            <a href="/ongoingGames" class="btn btn-lg btn-primary">Join Game</a>
-            <a href="/logout" class="btn btn-danger btn-lg">logout</a>
+        <div class="bar">
+            <input type="text" class="form-control" ng-model="searchText" placeholder="Search for games by username" />
+        </div>
+
+        <div class="list-group">
+            <button class="list-group-item" ng-repeat="game in games | filter:searchText">Join {{game.username}}'s game</button>
         </div>
     </div>
 </div>
+
+<script src="angularFiles/app.js"></script>
 </body>
 </html>

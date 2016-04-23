@@ -5,8 +5,10 @@ var bcrypt = require('bcrypt-nodejs');
 //setup database schema
 var userSchema = mongoose.Schema({
 	username : String,
-	password : String
-});
+	password : String,
+	activeGame : Boolean,
+	hasOpponent : Boolean
+}, {collection : 'tanksUsers'});
 
 //method for hashing passwords
 userSchema.methods.generateHash = function(password) {
