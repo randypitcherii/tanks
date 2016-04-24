@@ -1,8 +1,7 @@
-//get name ID for this session.
-var name = $("#gameTitle").text().split("'")[0];
-if (name == "") {
-    name = "" + Math.random();
-}
+//get current user and game ID for this session
+var name = $("#currentUser").text();
+var gameID = $("#gameID").text();
+
 
 //initialize the keyboard controls
 var inputType = {};
@@ -19,9 +18,13 @@ inputType.button_f = keyboard(70);
 var moveObject = {};
 moveObject.name = name;
 moveObject.move = "";//initial value.
+moveObject.gameID = gameID;
 
 //initialize the websocket
 var socket = io();
+
+//join room with gameID
+socket.emit('join', gameID);
 
 //create socket input handler.
 //moveCommand has same structure as moveObject

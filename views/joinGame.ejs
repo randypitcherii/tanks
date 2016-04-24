@@ -21,9 +21,9 @@
 <body>
     <div class="container-fluid row">
         <div class="col-sm-4">
-            <h1 id="gameTitle"><%= user.username %>'s game</h1>
-            <h1 hidden id="currentUser"><%= user.username %></h1>
-            <h1 hidden id="gameID"><%= user.username %></h1>
+            <h1 id="gameTitle"><%= gameID %>'s game</h1>
+            <h1 style="display: none;" id="currentUser"><%= user.username %></h1>
+            <h1 style="display: none;" id="gameID"><%= gameID %></h1>
         </div>
         <div class="col-sm-8">
             <a class="btn btn-lg btn-danger pull-right" href="/endGame">End game</a>

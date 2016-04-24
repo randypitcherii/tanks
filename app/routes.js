@@ -42,6 +42,7 @@ module.exports = function(app, passport) {
 	//create game (make sure they're logged in)
 	app.get('/createGame', isLoggedIn, function(req, res) {
 		req.user.activeGame = true;
+		req.user.hasOpponent = false;
 		req.user.save(function(err) {
 			res.render('createGame.ejs', {
 				user : req.user, //get the user out of session and pass to template
@@ -49,9 +50,17 @@ module.exports = function(app, passport) {
 		});
 	});
 
+	//join a game (make sure they're logged in)
+	app.post('/joinGame', isLoggedIn, function(req, res) {
+		res.render('joinGame.ejs', {
+			user : req.user, //get the user out of session and pass to template
+			gameID : req.body.gameID //get gameID from post data
+		});
+	});
+
 	//see available games (make sure they're logged in)
 	app.get('/ongoingGames', isLoggedIn, function(req, res) {
-		req.user.activeGame = true;
+		req.user.activeGame = false;
 		req.user.save(function(err) {
 			res.render('ongoingGames.ejs', {
 				user : req.user, //get the user out of session and pass to template
@@ -77,8 +86,11 @@ module.exports = function(app, passport) {
 
 	//logout
 	app.get('/logout', function(req, res) {
-		req.logout();
-		res.redirect('/');
+		req.user.activeGame = false;
+		req.user.save(function(err) {
+			req.logout();
+			res.redirect('/');
+		});		
 	});
 
 	//function for checking user is logged in
@@ -90,4 +102,4 @@ module.exports = function(app, passport) {
 		//if not authenticated, redirect to home page
 		res.redirect('/');
 	}
-}
+};

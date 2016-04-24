@@ -45,8 +45,12 @@ require('./app/routes.js')(app, passport);
 
 //establish socket listener
 io.on('connection', function(socket) {
+	socket.on('join', function(room) {
+		socket.join(room);
+	});
+
     socket.on('move', function(moveObject) {
-        io.emit('move', moveObject);
+        io.to(moveObject.gameID).emit('move', moveObject);
         console.log(moveObject.name + " sent: " + moveObject.move);
     });
 });

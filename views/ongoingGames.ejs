@@ -10,24 +10,38 @@
             padding-top:80px;
             background-color: #263238; 
         }
+        button {
+            margin-top: 5px;
+        }
     </style>
 </head>
-<div class="container row" ng-app="app" ng-controller="getGames">
+<div class="container" ng-app="app" ng-controller="getGames">
     <div class="jumbotron col-md-8 col-md-offset-2 col-xs-12">
-        <div class="page-header text-center">
-            <h1>
-                <span class="fa fa-star"></span> 
-                Available Games
-                <span class="fa fa-star"></span>
-            </h1>
-        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <a class="btn btn-success" href="/profile"><span class="fa fa-home"></span> Home</a>
+            </div>
+            <div class="page-header text-center col-sm-12">
+                <h1>
+                    <span class="fa fa-star"></span> 
+                    Open Games
+                    <span class="fa fa-star"></span>
+                </h1>
+            </div>
 
-        <div class="bar">
-            <input type="text" class="form-control" ng-model="searchText" placeholder="Search for games by username" />
-        </div>
+            <div class="bar">
+                <input type="text" class="form-control" ng-model="searchText" placeholder="Search for games by username"/>
+            </div>
+            <br/>
 
-        <div class="list-group">
-            <button class="list-group-item" ng-repeat="game in games | filter:searchText">Join {{game.username}}'s game</button>
+            <form action="/joinGame" method="post" ng-repeat="game in games | filter:searchText">
+                <input type=text name="gameID" class="form-control" value="{{game.username}}" style="display:none;"/>
+                <button type="submit" class="btn-block btn-primary btn-lg">Join {{game.username}}'s game</button>
+            </form>
+
+            <div class="col-sm-12 text-center" ng-if="games.length === 0">
+                <h2>No available games...</h2>
+            </div>
         </div>
     </div>
 </div>
