@@ -517,11 +517,19 @@ function reset() {
 
 	healthBar_tankA.inner.width = 100;
 	healthBar_tankB.inner.width = 100;
-	g.stage.putBottom(tankA);
-	g.stage.putTop(tankB);
+	background.putTop(tankB,0,32);
+	background.putBottom(tankA);
+
+	g.contain(tankA, background);
+	g.contain(turretA, background);
+	g.contain(tankB, background);
+	g.contain(turretB, background);
+
+	//g.stage.putBottom(tankA);
+	//g.stage.putTop(tankB);
 	//  console.log("the initial tank A rotaton is " + tankA.	);
 	tankB.rotation = Math.PI;
-	g.remove(walls);
+	//g.remove(walls);
 
 
 	//background.putBottom(tankA,background.width/2,tankA.height);
@@ -533,7 +541,7 @@ function reset() {
 	// g.remove(aliens);
 	//g.remove(walls);
 	//dust.stop();
-	createWall();
+	//createWall();
 
 
 
