@@ -1,6 +1,6 @@
 "use strict";
 
-var thingsToLoad = ["../images/wall.jpg","../sounds/explosion.mp3","../images/dynamite.png","../images/explorer.png","../fonts/emulogic.ttf","../images/dungeon.png","../images/explosion.jpeg","../images/blob.png","../images/door.png","../images/bunny.png","../sounds/launch_missile.mp3","../sounds/missile_heat.mp3","../sounds/normal_bullets.mp3","../sounds/bullets_hit.mp3","../images/up.png","../images/bullet.png","../images/smoke.png","../images/debris.png","../images/monster_boss.png","../sounds/missile_reloading.wav","../images/start_button.png","../images/restart_button.png"];
+var thingsToLoad = ["../images/switch_ammo_button.png","../images/right_arrow.png","../images/left_arrow.png","../images/down_arrow.png","../images/up_arrow.png","../images/wall.jpg","../sounds/explosion.mp3","../images/dynamite.png","../images/explorer.png","../fonts/emulogic.ttf","../images/dungeon.png","../images/explosion.jpeg","../images/blob.png","../images/door.png","../images/bunny.png","../sounds/launch_missile.mp3","../sounds/missile_heat.mp3","../sounds/normal_bullets.mp3","../sounds/bullets_hit.mp3","../images/up.png","../images/bullet.png","../images/smoke.png","../images/debris.png","../images/monster_boss.png","../sounds/missile_reloading.wav","../images/start_button.png","../images/restart_button.png"];
 
 var g = hexi(512,512,start,thingsToLoad,load);
 
@@ -40,7 +40,8 @@ var background = undefined,
     start_button = undefined,
     healthBar_tankA_prev = undefined,
     healthBar_tankB_prev = undefined,
-    walls = undefined;
+    walls = undefined,
+    control_gui = undefined;
 
 
 function load() {
@@ -71,6 +72,7 @@ function start() {
 function setup() {
 	gameScene = g.group();
 	// adding the tank and the red line as a turret
+	background = g.rectangle(400, 400, "yellow");
 	tankA = g.rectangle(32, 32, "green"), turretA = g.line("red", 10, 0, 0, 32, 0);
 	tankA.setPivot(0.5,0.5);
 	tankA.name = "tankA";
@@ -78,10 +80,18 @@ function setup() {
 	turretA.x = 0;
 	turretA.y = 0;
 
-	g.stage.putBottom(tankA);
+	//control_gui = g.rectangle(400,112,"green");
+	//control_gui.setPivot(0,0);
+	//control_gui.setPosition(400,400);
+	//g.stage.putBottom(control_gui);
+
+	//g.stage.putBottom(tankA);
+	background.putBottom(tankA);
+
+	//background.putBottom(tankA);
 	//tankA.rotation = 3/2 * Math.PI;
 	turretA.rotation = 3/2 * Math.PI;
-	console.log("turretA rotation is " + turretA.rotation);
+	//console.log("turretA rotation is " + turretA.rotation);
 	//g.stage.putTop(tankB);
 	//tankA.rotation = 3/2 * Math.PI;
 
@@ -94,10 +104,10 @@ function setup() {
 	tankB.addChild(turretB);
 	turretB.x = 0;
 	turretB.y = 0;
-	gameScene.addChild(tankB);
+	//gameScene.addChild(tankB);
+	background.putTop(tankB,0,32);
 
-
-	g.stage.putTop(tankB);
+	//g.stage.putTop(tankB);
 	console.log("the initial tank A rotaton is " + tankA.rotation);
 	tankB.rotation = Math.PI;
 	turretB.rotation = -Math.PI/2;
@@ -134,9 +144,16 @@ function setup() {
 	healthBar_tankA = g.group(tankA_outerBar, tankA_innerBar);
 	healthBar_tankA.inner = tankA_innerBar;
 
-	healthBar_tankA.x = g.canvas.width - tankA_outerBar.width;
-	healthBar_tankA.y = g.canvas.height - tankA_outerBar.height;
+	healthBar_tankA.x = background.width - tankA_outerBar.width;
+	healthBar_tankA.y = background.height - tankA_outerBar.height;
 
+
+	//background.putBottom(healthBar_tankB,40,-tankB_outerBar.height);
+	//g.stage.putBottom(healthBar_tankB,0,0);
+	background.putRight(healthBar_tankB,0,background.height/2 - 8);
+	background.putRight(healthBar_tankA,0,-background.height/2 + 8);
+	//healthBar_tankB.x = g.stage.width - tankA_outerBar.width;
+	//healthBar_tankB.y = g.stage.height - tankA_outerBar.height;
 
 	/*
 	   initialising the array bullets
@@ -157,146 +174,150 @@ function setup() {
 	missile_hitSound.volume = 0.4;
 	missile_reloading_sound = g.sound("../sounds/missile_reloading.wav");
 
-	createWall();
+	//createWall();
 	initTankControls();    
 
 	/*
-	   setting up keyboard
+	   FOR MOBILE
 	   */
-	   /*
-	var left = keyboard(37),
-	    up = keyboard(38),
-	    right= keyboard(39),
-	    down = keyboard(40),
-	    enter = keyboard(13),
-	    backspace = keyboard(8),
-	    space = keyboard(32),
-	    button_f = keyboard(70);
-	// turretA.rotation = Math.PI;
-	// when 'f' button on keyboard is pressed
-	button_f.press = function() {
-		//console.log("f is pressed");  
-		tankA.switch_ammo_flag *= -1;
-		updateEnemy(tankA.switch_ammo_flag);
+	var forward_button = g.button([
+			"../images/up_arrow.png",
+			]);
+	//forward_button.width = 40;
+	forward_button.height = 40;
+	forward_button.press = () => {
+		console.log("state is " + forward_button.state);
+		tankA.rotation = 0;
+		tankA.vy = -5;
+		tankA.vx = 0;
+		//console.log("the button width is " + forward_button.width);
 	};
+	forward_button.release = () => {
+		if (!down_button.isDown && tankA.vx === 0) {
+			tankA.vy = 0;
 
-	// LEFT arrow key
-	left.press = function() {
-		//console.log("left key pressed");
+		}
+	};
+	forward_button.setPosition(120,410);
+
+	var left_button = g.button([
+			"../images/left_arrow.png",
+			]);
+	left_button.width = 78;
+	left_button.height = 40;
+	left_button.press = () => {
 		tankA.rotation = 270 / 180 * Math.PI;
-		//turretA.rotation = tankA.rotation;
+
 		//Change the player's velocity when the key is pressed.
 		tankA.vx = -5;
 		tankA.vy = 0;
-		updateEnemy("left_press");
+		console.log("state is " + left_button.state);
 	};
-	//Assign key `release` method.
-	left.release = function() {
+
+	left_button.release = function() {
 		//If the left arrow has been released, and the right arrow isn't down,
 		//and the player isn't moving vertically:
 		//Stop the player.
-		if (!right.isDown && tankA.vy === 0) {
+		if (!right_button.isDown && tankA.vy === 0) {
 			tankA.vx = 0;
-			updateEnemy("left_release");
 		}
 	};
+	left_button.setPosition(22,460);
 
-	//RIGHT arrow key
-	right.press = function () {
+	var right_button = g.button([
+			"../images/right_arrow.png",
+			]);
+	right_button.width = 78;
+	right_button.height = 40;
+	right_button.press = () => {
 		tankA.rotation = 0.5 * Math.PI;
-		//turretA.rotation = 270 / 180 * Math.PI;
 		tankA.vx = 5;
 		tankA.vy = 0;
-		updateEnemy("right_press");
-
+		console.log("state is " + right_button.state);
 	};
 
-	right.release = function () {
-		if (!left.isDown && tankA.vy === 0) {
+	right_button.release = function () {
+		if (!right_button.isDown && tankA.vy === 0) {
 			tankA.vx = 0;
-			updateEnemy("right_release");
-
 		}
 	};
 
-	//UP key
-    
-	up.press = () => {
-		tankA.rotation = 0;
-		//turretA.rotation = 3/2 * Math.PI;
-		tankA.vy = -5;
-		tankA.vx = 0;
-		updateEnemy("up_press");
-	};
+	right_button.setPosition(208,460);
 
-	up.release = () => {
-		if (!down.isDown && tankA.vx === 0) {
-			tankA.vy = 0;
-			updateEnemy("up_release");
-		}
-	};
-
-	// DOWN
-	down.press = () => {
-		tankA.rotation = 3.14;
-		//turretA.rotation = 3/2 * Math.PI;
+	var down_button = g.button([
+			"../images/down_arrow.png",
+			]);
+	down_button.width = 78;
+	down_button.height = 40;
+	down_button.press = () => {
+		tankA.rotation = Math.PI;
 		tankA.vy = 5;
 		tankA.vx = 0;
-		updateEnemy("down_press");
 	};
-	down.release = () => {
-		if (!up.isDown && tankA.vx === 0) {
+
+	down_button.release = () => {
+		if (!forward_button.isDown && tankA.vx === 0) {
 			tankA.vy = 0;
-			updateEnemy("down_release");
 		}
 	};
+	//down_button.setPosition(80,g.stage.height - 60);
+	down_button.setPosition(120,460);
 
-	
-	
-	space.press = () => {
+	background.interact = true;
+
+	background.press = () => {
 		fire(tankA);
-		updateEnemy("space_press");
 	};
-	*/
+
+	var change_ammo_button = g.button([
+			"../images/switch_ammo_button.png",
+			]);
+	//change_ammo_button.width = 120;
+	change_ammo_button.height = 40;
+	change_ammo_button.press = () => {
+		console.log("u tapped the change ammo button");
+		tankA.switch_ammo_flag *= -1;
+	};
+	//right_button.setPosition(130,g.stage.height - 70);
+	change_ammo_button.setPosition(380,460);
+
 	g.state = play;
-
-    
-
 
 
 }
 
 function play() {
 	//console.log("the rotation in playing mode " + turretA.rotation);
-
-	let tankA_wall_collision = g.hit(tankA, walls, true, false, false,
-			function(collision, platform) {
-				if (collision == "right") {
-					//tankA.vx = 0;
-				} else if (collision == "left") {
-					//tankA.vy = 0;
-				}
-				console.log("collsiion side is " + collision);
-			}
-			);
+	/*
+	   let tankA_wall_collision = g.hit(tankA, walls, true, false, false,
+	   function(collision, platform) {
+	   if (collision == "right") {
+	//tankA.vx = 0;
+	} else if (collision == "left") {
+	//tankA.vy = 0;
+	}
+	console.log("collsiion side is " + collision);
+	}
+	);
 	let tankB_wall_collision = g.hit(tankB, walls, true, false, false,
-			function(collision, platform) {
-				if (collision == "right") {
-					//tankB.vx = 0;
-				} else if (collision == "left") {
-					//tankB.vy = 0;
-				}
-				console.log("collsiion side is " + collision);
-			}
-			);
+	function(collision, platform) {
+	if (collision == "right") {
+	//tankB.vx = 0;
+	} else if (collision == "left") {
+	//tankB.vy = 0;
+	}
+	console.log("collsiion side is " + collision);
+	}
+	);
+	*/
 	g.move(tankA);
 	g.move(tankB);
 	//g.move(bullets); 
 
-	g.contain(tankA, g.stage);
-	g.contain(turretA, g.stage);
-	g.contain(tankB, g.stage);
-	g.contain(turretB, g.stage);
+	g.contain(tankA, background);
+	g.contain(turretA, background);
+	g.contain(tankB, background);
+	g.contain(turretB, background);
 
 
 	/*
@@ -306,7 +327,7 @@ function play() {
 
 		//Move the bullet
 		g.move(bullet);
-		if(bullet.x > g.stage.width || bullet.x <= 0 || bullet.y > g.stage.height || bullet.y <= 0) {
+		if(bullet.x > background.width || bullet.x <= 0 || bullet.y > background.height || bullet.y <= 0) {
 			//console.log("i am out of vbound");
 			g.remove(bullet);
 			return false;
@@ -372,7 +393,7 @@ function play() {
 
 		//Check for a collision with the stage boundary
 		//var collision = g.outsideBounds(fire_bullet, g.stage);
-		if(fire_bullet.x > g.stage.width || fire_bullet.x <= 0 || fire_bullet.y > g.stage.height || fire_bullet.y <= 0) {
+		if(fire_bullet.x > background.width || fire_bullet.x <= 0 || fire_bullet.y > background.height || fire_bullet.y <= 0) {
 			console.log("i am out of vbound");
 			g.remove(fire_bullet);
 			return false;
@@ -395,10 +416,10 @@ function play() {
 			missile_hitSound.play();
 			console.log("health left is " + healthBar_tankB.inner.width);
 			g.createParticles(tankB.x, tankB.y,
-				function () {
-					return g.sprite("../images/explosion.jpeg");
-				}
-				, g.stage, 50); // when hitted by rocket output some debris
+					function () {
+						return g.sprite("../images/explosion.jpeg");
+					}
+					, g.stage, 50); // when hitted by rocket output some debris
 
 			//Remove the bullet from the `bullets` array
 			return false;
@@ -413,7 +434,7 @@ function play() {
 				healthBar_tankA.inner.width += damage;
 			}
 			missile_hitSound.play();
-				console.log("health left is " + healthBar_tankB.inner.width);
+			console.log("health left is " + healthBar_tankB.inner.width);
 			g.createParticles(tankA.x, tankA.y,
 					function () {
 						return g.sprite("../images/explosion.jpeg");
@@ -430,8 +451,8 @@ function play() {
 	});
 
 
-	
-	
+
+
 	if(healthBar_tankB.inner.width <= 0 && healthBar_tankA.inner.width <= 0) {
 		healthBar_tankA.inner.width = 0;
 		healthBar_tankB.inner.width = 0;
@@ -443,23 +464,23 @@ function play() {
 		healthBar_tankA.inner.width = 0;
 		g.state = end("YOU LOST!!!");
 	}
-	
+
 	/*
-	if (healthBar_tankB.inner.width > healthBar_tankB_prev && healthBar_tankA.inner.width > healthBar_tankA_prev) {
-		healthBar_tankA.inner.width = 0;
-		healthBar_tankB.inner.width = 0;
-		g.state = end("ITS A DRAW!!!");
-	} else if(healthBar_tankA.inner.width > healthBar_tankA_prev) {
-		healthBar_tankA.inner.width = 0;
-		g.state = end("YOU LOST!!!");
-	} else if (healthBar_tankB.inner.width > healthBar_tankB_prev) {
-			healthBar_tankB.inner.width = 0;
-		g.state = end("YOU WON!!!");
-	} 
-	*/
+	   if (healthBar_tankB.inner.width > healthBar_tankB_prev && healthBar_tankA.inner.width > healthBar_tankA_prev) {
+	   healthBar_tankA.inner.width = 0;
+	   healthBar_tankB.inner.width = 0;
+	   g.state = end("ITS A DRAW!!!");
+	   } else if(healthBar_tankA.inner.width > healthBar_tankA_prev) {
+	   healthBar_tankA.inner.width = 0;
+	   g.state = end("YOU LOST!!!");
+	   } else if (healthBar_tankB.inner.width > healthBar_tankB_prev) {
+	   healthBar_tankB.inner.width = 0;
+	   g.state = end("YOU WON!!!");
+	   } 
+	   */
 
 	healthBar_tankA_prev = healthBar_tankA.inner.width
-	healthBar_tankB_prev = healthBar_tankB.inner.width;
+		healthBar_tankB_prev = healthBar_tankB.inner.width;
 
 
 
@@ -471,7 +492,7 @@ function play() {
 function end(message) {
 	//message ="what"
 	g.pause();
-	
+
 	//console.log("at end");
 	gameOverMessage = g.text("", "48px Futura","black",g.stage.width/2 - 120, g.stage.width/2 + 20);
 	//gameOverMessage = background.text("", "48px Futura","black",background.width/2,bac);
@@ -512,7 +533,7 @@ function reset() {
 	// g.remove(aliens);
 	//g.remove(walls);
 	//dust.stop();
-	 createWall();
+	createWall();
 
 
 
@@ -606,67 +627,67 @@ function fire(tank) {
 	}
 }
 function createWall() {
-		walls = [];
+	walls = [];
 
-		// NUBMER 2 wall
-		for (var i = 0; i < 40; i++) {
-			//let wall = g.sprite("../images/wall.jpg");
-			let wall =  g.rectangle(2,2, "brown");
-			let x = 1/4*g.stage.width;
-			// avoding collision
+	// NUBMER 2 wall
+	for (var i = 0; i < 40; i++) {
+		//let wall = g.sprite("../images/wall.jpg");
+		let wall =  g.rectangle(2,2, "brown");
+		let x = 1/4*g.stage.width;
+		// avoding collision
 
-			// let y = g.randomInt(0,0);
-			let y = (1/4*g.stage.height) + 6 * i;
-			wall.x = x;
-			wall.y = y
-				walls.push(wall);
-
-		}
-		// NUMBER 3 wall
-		for (var i = 0; i < 40; i++) {
-				let wall =  g.rectangle(2,2, "brown");
-			let x = 1/4*g.stage.width + 8;
-			let y = (1/4*g.stage.height) + 6 * i;
-			wall.x = x;
-			wall.y = y
-				walls.push(wall);
-		}
-
-		//NUMBER 6 wall
-		for (var i = 0; i < 40; i++) {
-				let wall =  g.rectangle(2,2, "brown");
-
-			let x = g.stage.width - (g.stage.width*1/4);
-			// avoding collision
-
-			// let y = g.randomInt(0,0);
-			let y = (1/4*g.stage.height) + 6 * i;
-			wall.x = x;
-			wall.y = y
-				walls.push(wall);
-
-		}
-		// console.log("walls length is " + walls.length );
-		// NUMBER 7  wall
-		for (var i = 0; i < 40; i++) {
-				let wall =  g.rectangle(2,2, "brown");
-			let x = g.stage.width - (g.stage.width*1/4) - 8;
-			let y = (1/4*g.stage.height) + 6 * i;
-			wall.x = x;
-			wall.y = y
-				walls.push(wall);
-		}
-		for (var i = 0; i < 40; i++) {
-				let wall =  g.rectangle(2,2, "brown");
-			let x = g.stage.width - (g.stage.width*1/4) - 8;
-			let y = (1/4*g.stage.height) + 6 * i;
-			wall.x = x;
-			wall.y = y
-				walls.push(wall);
-		}
-
-
-
+		// let y = g.randomInt(0,0);
+		let y = (1/4*g.stage.height) + 6 * i;
+		wall.x = x;
+		wall.y = y
+			walls.push(wall);
 
 	}
+	// NUMBER 3 wall
+	for (var i = 0; i < 40; i++) {
+		let wall =  g.rectangle(2,2, "brown");
+		let x = 1/4*g.stage.width + 8;
+		let y = (1/4*g.stage.height) + 6 * i;
+		wall.x = x;
+		wall.y = y
+			walls.push(wall);
+	}
+
+	//NUMBER 6 wall
+	for (var i = 0; i < 40; i++) {
+		let wall =  g.rectangle(2,2, "brown");
+
+		let x = g.stage.width - (g.stage.width*1/4);
+		// avoding collision
+
+		// let y = g.randomInt(0,0);
+		let y = (1/4*g.stage.height) + 6 * i;
+		wall.x = x;
+		wall.y = y
+			walls.push(wall);
+
+	}
+	// console.log("walls length is " + walls.length );
+	// NUMBER 7  wall
+	for (var i = 0; i < 40; i++) {
+		let wall =  g.rectangle(2,2, "brown");
+		let x = g.stage.width - (g.stage.width*1/4) - 8;
+		let y = (1/4*g.stage.height) + 6 * i;
+		wall.x = x;
+		wall.y = y
+			walls.push(wall);
+	}
+	for (var i = 0; i < 40; i++) {
+		let wall =  g.rectangle(2,2, "brown");
+		let x = g.stage.width - (g.stage.width*1/4) - 8;
+		let y = (1/4*g.stage.height) + 6 * i;
+		wall.x = x;
+		wall.y = y
+			walls.push(wall);
+	}
+
+
+
+
+}
 
