@@ -2,7 +2,6 @@
 var name = $("#currentUser").text();
 var gameID = $("#gameID").text();
 
-
 //initialize the keyboard controls
 var inputType = {};
 inputType.left = keyboard(37);
@@ -19,6 +18,11 @@ var moveObject = {};
 moveObject.name = name;
 moveObject.move = ""; //initial value.
 moveObject.gameID = gameID;
+
+//the following two attributes are updated on every positional button release
+//and sent to the server to ensure synchronization of positions across games
+moveObject.xPosition = -1;//initial value
+moveObject.yPosition = -1;//initial value
 
 //initialize the websocket
 var socket = io();
@@ -41,7 +45,7 @@ socket.on('move', function(moveCommand) {
     }
 
     //send the command to the tankMovement.js file for processing
-    handleCommand(tankToMove, isLocal, moveCommand.move);
+    handleCommand(tankToMove, isLocal,moveCommand.move,  moveCommand);
 });
 
 /**
@@ -57,6 +61,8 @@ function createKeyboardInputListeners() {
     //handle the left arrow key release
     inputType.left.release = function() {
         moveObject.move = moveset.leftRelease;
+        moveObject.xPosition = tankA.x;
+        moveObject.yPosition = tankA.y;
         socket.emit('move', moveObject);
     }
 
@@ -69,6 +75,8 @@ function createKeyboardInputListeners() {
     //handle the up release
     inputType.up.release = function() {
         moveObject.move = moveset.upRelease;
+        moveObject.xPosition = tankA.x;
+        moveObject.yPosition = tankA.y;
         socket.emit('move', moveObject);
     }
 
@@ -81,6 +89,8 @@ function createKeyboardInputListeners() {
     //handle the right release
     inputType.right.release = function() {
         moveObject.move = moveset.rightRelease;
+        moveObject.xPosition = tankA.x;
+        moveObject.yPosition = tankA.y;
         socket.emit('move', moveObject);
     }
 
@@ -93,6 +103,8 @@ function createKeyboardInputListeners() {
     //handle the down release
     inputType.down.release = function() {
         moveObject.move = moveset.downRelease;
+        moveObject.xPosition = tankA.x;
+        moveObject.yPosition = tankA.y;
         socket.emit('move', moveObject);
     }
 
@@ -147,6 +159,7 @@ function createMobileInputListeners(mobileInputs) {
  * @param mobileInputs - collection of mobile button objects for game input on mobile.
  */
 function initTankControls(mobileInputs) {
+    //wire up those callback functions to event listeners.
     createKeyboardInputListeners();
     createMobileInputListeners(mobileInputs);
 }

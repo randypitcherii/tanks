@@ -16,8 +16,8 @@ moveset.button_f = "f";
 /**
  * This function handles the left arrow press for the specified tank object.
  *
- * var tank - tank object to be moved
- * var isLocal - boolean. True means tank is the local tank, false means tank is opponent 
+ * @param tank - tank object to be moved
+ * @param isLocal - boolean. True means tank is the local tank, false means tank is opponent 
  */
 function leftMove(tank, isLocal) {
 	if (isLocal) {
@@ -34,18 +34,30 @@ function leftMove(tank, isLocal) {
 /**
  * This function handles the left arrow release for the specified tank object.
  *
- * var tank - tank object to be moved
- * var isLocal - boolean. True means tank is the local tank, false means tank is opponent 
+ * @param tank - tank object to be moved
+ * @param isLocal - boolean. True means tank is the local tank, false means tank is opponent 
+ * @param xPosition - the x coordinate of the opponent tank to be repositioned. This coordinate is with respect to the opponent's local game
+ * @param yPosition - the y coordinate of the opponent tank to be repositioned. This coordinate is with respect to the opponent's local game
  */
-function leftRelease(tank, isLocal) {
+function leftRelease(tank, isLocal, xPosition, yPosition) {
 	tank.vx = 0;
+
+	//if this is a non-local command, update the local position of the opponent tank to
+	//maintain synchronization with the opponent's instance of the current game
+	if(!isLocal) {
+		//the position coordinates from the opponent's instance of the current game
+		//must be mirrored to align with the local instance of the game. Use the current game
+		//background object to get the local width and height then calculate the updated local position
+		tankB.x = background.width - xPosition;
+		tankB.y = background.height - yPosition;
+	}
 }
 
 /**
  * This function handles the up arrow press for the specified tank object.
  *
- * var tank - tank object to be moved
- * var isLocal - boolean. True means tank is the local tank, false means tank is opponent 
+ * @param tank - tank object to be moved
+ * @param isLocal - boolean. True means tank is the local tank, false means tank is opponent 
  */
 function upMove(tank, isLocal) {
 	if (isLocal) {
@@ -62,18 +74,29 @@ function upMove(tank, isLocal) {
 /**
  * This function handles the up arrow release for the specified tank object.
  *
- * var tank - tank object to be moved
- * var isLocal - boolean. True means tank is the local tank, false means tank is opponent 
+ * @param tank - tank object to be moved
+ * @param isLocal - boolean. True means tank is the local tank, false means tank is opponent 
+ * @param xPosition - the x coordinate of the opponent tank to be repositioned. This coordinate is with respect to the opponent's local game
+ * @param yPosition - the y coordinate of the opponent tank to be repositioned. This coordinate is with respect to the opponent's local game
  */
-function upRelease(tank, isLocal) {
+function upRelease(tank, isLocal, xPosition, yPosition) {
 	tank.vy = 0;
+	//if this is a non-local command, update the local position of the opponent tank to
+	//maintain synchronization with the opponent's instance of the current game
+	if(!isLocal) {
+		//the position coordinates from the opponent's instance of the current game
+		//must be mirrored to align with the local instance of the game. Use the current game
+		//background object to get the local width and height then calculate the updated local position
+		tankB.x = background.width - xPosition;
+		tankB.y = background.height - yPosition;
+	}
 }
 
 /**
  * This function handles the right arrow press for the specified tank object.
  *
- * var tank - tank object to be moved
- * var isLocal - boolean. True means tank is the local tank, false means tank is opponent 
+ * @param tank - tank object to be moved
+ * @param isLocal - boolean. True means tank is the local tank, false means tank is opponent 
  */
 function rightMove(tank, isLocal) {
 	if (isLocal) {
@@ -90,18 +113,30 @@ function rightMove(tank, isLocal) {
 /**
  * This function handles the right arrow release for the specified tank object.
  *
- * var tank - tank object to be moved
- * var isLocal - boolean. True means tank is the local tank, false means tank is opponent 
+ * @param tank - tank object to be moved
+ * @param isLocal - boolean. True means tank is the local tank, false means tank is opponent 
+ * @param xPosition - the x coordinate of the opponent tank to be repositioned. This coordinate is with respect to the opponent's local game
+ * @param yPosition - the y coordinate of the opponent tank to be repositioned. This coordinate is with respect to the opponent's local game
  */
-function rightRelease(tank, isLocal) {
+function rightRelease(tank, isLocal, xPosition, yPosition) {
 	tank.vx = 0;
+
+	//if this is a non-local command, update the local position of the opponent tank to
+	//maintain synchronization with the opponent's instance of the current game
+	if(!isLocal) {
+		//the position coordinates from the opponent's instance of the current game
+		//must be mirrored to align with the local instance of the game. Use the current game
+		//background object to get the local width and height then calculate the updated local position
+		tankB.x = background.width - xPosition;
+		tankB.y = background.height - yPosition;
+	}
 }
 
 /**
  * This function handles the down arrow press for the specified tank object.
  *
- * var tank - tank object to be moved
- * var isLocal - boolean. True means tank is the local tank, false means tank is opponent 
+ * @param tank - tank object to be moved
+ * @param isLocal - boolean. True means tank is the local tank, false means tank is opponent 
  */
 function downMove(tank, isLocal) {
 	if (isLocal) {
@@ -118,18 +153,27 @@ function downMove(tank, isLocal) {
 /**
  * This function handles the down arrow release for the specified tank object.
  *
- * var tank - tank object to be moved
- * var isLocal - boolean. True means tank is the local tank, false means tank is opponent 
+ * @param tank - tank object to be moved
+ * @param isLocal - boolean. True means tank is the local tank, false means tank is opponent 
  */
-function downRelease(tank, isLocal) {
+function downRelease(tank, isLocal, xPosition, yPosition) {
 	tank.vy = 0;
+	//if this is a non-local command, update the local position of the opponent tank to
+	//maintain synchronization with the opponent's instance of the current game
+	if(!isLocal) {
+		//the position coordinates from the opponent's instance of the current game
+		//must be mirrored to align with the local instance of the game. Use the current game
+		//background object to get the local width and height then calculate the updated local position
+		tankB.x = background.width - xPosition;
+		tankB.y = background.height - yPosition;
+	}
 }
 
 /**
  * This function handles the enter button press for the specified tank object.
  *
- * var tank - tank object to be moved
- * var isLocal - boolean. True means tank is the local tank, false means tank is opponent 
+ * @param tank - tank object to be moved
+ * @param isLocal - boolean. True means tank is the local tank, false means tank is opponent 
  */
 function enterMove(tank, isLocal) {
 }
@@ -137,8 +181,8 @@ function enterMove(tank, isLocal) {
 /**
  * This function handles the backspace button press for the specified tank object.
  *
- * var tank - tank object to be moved
- * var isLocal - boolean. True means tank is the local tank, false means tank is opponent 
+ * @param tank - tank object to be moved
+ * @param isLocal - boolean. True means tank is the local tank, false means tank is opponent 
  */
 function backspaceMove(tank, isLocal) {
 }
@@ -146,7 +190,7 @@ function backspaceMove(tank, isLocal) {
 /**
  * This function handles the space button press for the specified tank object.
  *
- * var tank - tank object to be moved
+ * @param tank - tank object to be moved
  */
 function spaceMove(tank) {
 	fire(tank);
@@ -155,7 +199,7 @@ function spaceMove(tank) {
 /**
  * This function handles the F press for the specified tank object.
  *
- * var tank - tank object to switch the ammo flag for.
+ * @param tank - tank object to switch the ammo flag for.
  */
 function f_buttonMove(tank) {
 	tank.switch_ammo_flag *= -1;
@@ -165,26 +209,28 @@ function f_buttonMove(tank) {
  * This function dispatches the incoming command from the server to the
  * correct handler function.
  *
- * var tank - the tank being handled in this command
- * isLocal - boolean: true if 
+ * @param tank - the tank being handled in this command
+ * @param isLocal - boolean: true if command is for local tank, false otherwise
+ * @param command - string that stores the move to execute
+ * @param commandObject - full command object from server with attributes needed to execute some moves
  */
-function handleCommand(tank, isLocal, command) {
+function handleCommand(tank, isLocal, command, commandObject) {
 	if (command === moveset.left) {
 		leftMove(tank, isLocal);
 	} else if (command === moveset.leftRelease) {
-		leftRelease(tank, isLocal);
+		leftRelease(tank, isLocal, commandObject.xPosition, commandObject.yPosition);
 	} else if (command === moveset.up) {
 		upMove(tank, isLocal);
 	} else if (command === moveset.upRelease) {
-		upRelease(tank, isLocal);
+		upRelease(tank, isLocal, commandObject.xPosition, commandObject.yPosition);
 	} else if (command === moveset.right) {
 		rightMove(tank, isLocal);
 	} else if (command === moveset.rightRelease) {
-		rightRelease(tank, isLocal);
+		rightRelease(tank, isLocal, commandObject.xPosition, commandObject.yPosition);
 	} else if (command === moveset.down) {
 		downMove(tank, isLocal);
 	}  else if (command === moveset.downRelease) {
-		downRelease(tank, isLocal);
+		downRelease(tank, isLocal, commandObject.xPosition, commandObject.yPosition);
 	} else if (command === moveset.enter) {
 		enterMove(tank, isLocal);
 	} else if (command === moveset.backspace) {
