@@ -19,12 +19,18 @@ moveset.button_f = "f";
  * @param tank - tank object to be moved
  * @param isLocal - boolean. True means tank is the local tank, false means tank is opponent 
  */
-function leftMove(tank, isLocal) {
+function leftMove(tank, isLocal, xPosition, yPosition) {
 	if (isLocal) {
 		tank.rotation = 270 / 180 * Math.PI; 
 	    tank.vx = -5;
 	    tank.vy = 0;
 	} else {
+		//the position coordinates from the opponent's instance of the current game
+		//must be mirrored to align with the local instance of the game. Use the current game
+		//background object to get the local width and height then calculate the updated local position
+		tank.x = background.width - xPosition;
+		tank.y = background.height - yPosition;
+
 		tank.rotation = 0.5 * Math.PI;
         tank.vx = 5;
         tank.vy = 0;
@@ -59,7 +65,7 @@ function leftRelease(tank, isLocal, xPosition, yPosition) {
  * @param tank - tank object to be moved
  * @param isLocal - boolean. True means tank is the local tank, false means tank is opponent 
  */
-function upMove(tank, isLocal) {
+function upMove(tank, isLocal, xPosition, yPosition) {
 	if (isLocal) {
 		tank.rotation = 0;
         tank.vy = -5;
@@ -68,6 +74,12 @@ function upMove(tank, isLocal) {
 		tank.rotation = Math.PI;
         tank.vy = 5;
         tank.vx = 0;
+
+		//the position coordinates from the opponent's instance of the current game
+		//must be mirrored to align with the local instance of the game. Use the current game
+		//background object to get the local width and height then calculate the updated local position
+		tank.x = background.width - xPosition;
+		tank.y = background.height - yPosition;
 	}
 }
 
@@ -98,12 +110,18 @@ function upRelease(tank, isLocal, xPosition, yPosition) {
  * @param tank - tank object to be moved
  * @param isLocal - boolean. True means tank is the local tank, false means tank is opponent 
  */
-function rightMove(tank, isLocal) {
+function rightMove(tank, isLocal, xPosition, yPosition) {
 	if (isLocal) {
 		tank.rotation = 0.5 * Math.PI;
         tank.vx = 5;
         tank.vy = 0;
 	} else {
+		//the position coordinates from the opponent's instance of the current game
+		//must be mirrored to align with the local instance of the game. Use the current game
+		//background object to get the local width and height then calculate the updated local position
+		tank.x = background.width - xPosition;
+		tank.y = background.height - yPosition;
+
 		tank.rotation = 270 / 180 * Math.PI; 
 	    tank.vx = -5;
 	    tank.vy = 0;
@@ -138,12 +156,18 @@ function rightRelease(tank, isLocal, xPosition, yPosition) {
  * @param tank - tank object to be moved
  * @param isLocal - boolean. True means tank is the local tank, false means tank is opponent 
  */
-function downMove(tank, isLocal) {
+function downMove(tank, isLocal, xPosition, yPosition) {
 	if (isLocal) {
 		tank.rotation = Math.PI;
         tank.vy = 5;
         tank.vx = 0;
 	} else {
+		//the position coordinates from the opponent's instance of the current game
+		//must be mirrored to align with the local instance of the game. Use the current game
+		//background object to get the local width and height then calculate the updated local position
+		tank.x = background.width - xPosition;
+		tank.y = background.height - yPosition;
+
 		tank.rotation = 0;
         tank.vy = -5;
         tank.vx = 0;

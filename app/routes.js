@@ -2,8 +2,9 @@ var User = require('../app/models/user');
 
 module.exports = function(app, passport) {
 	//homepage
-	app.get('/', function(req, res) {
-		res.render('index.ejs');//load default page
+	app.get('/', isLoggedIn, function(req, res) {
+		//if logged in, send to profile page, otherwise isLoggedIn will handle it
+		res.redirect('/profile');
 	});
 
 	//login
@@ -99,7 +100,7 @@ module.exports = function(app, passport) {
 			return next();
 		}
 
-		//if not authenticated, redirect to home page
-		res.redirect('/');
+		//if not authenticated, redirect to default page
+		res.render('index.ejs');//load default page
 	}
 };

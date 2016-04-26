@@ -55,6 +55,8 @@ function createKeyboardInputListeners() {
     //handle the left arrow key press
     inputType.left.press = function() {
         moveObject.move = moveset.left;
+        moveObject.xPosition = tankA.x;
+        moveObject.yPosition = tankA.y;
         socket.emit('move', moveObject);
     }
 
@@ -69,6 +71,8 @@ function createKeyboardInputListeners() {
     //handle the up press
     inputType.up.press = function() {
         moveObject.move = moveset.up;
+        moveObject.xPosition = tankA.x;
+        moveObject.yPosition = tankA.y;
         socket.emit('move', moveObject);
     }
 
@@ -83,6 +87,8 @@ function createKeyboardInputListeners() {
     //handle the right press
     inputType.right.press = function() {
         moveObject.move = moveset.right;
+        moveObject.xPosition = tankA.x;
+        moveObject.yPosition = tankA.y;
         socket.emit('move', moveObject);
     }
 
@@ -97,6 +103,8 @@ function createKeyboardInputListeners() {
     //handle the down press
     inputType.down.press = function() {
         moveObject.move = moveset.down;
+        moveObject.xPosition = tankA.x;
+        moveObject.yPosition = tankA.y;
         socket.emit('move', moveObject);
     }
 
