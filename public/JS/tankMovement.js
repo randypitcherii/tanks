@@ -240,19 +240,19 @@ function f_buttonMove(tank) {
  */
 function handleCommand(tank, isLocal, command, commandObject) {
 	if (command === moveset.left) {
-		leftMove(tank, isLocal);
+		leftMove(tank, isLocal, commandObject.xPosition, commandObject.yPosition);
 	} else if (command === moveset.leftRelease) {
 		leftRelease(tank, isLocal, commandObject.xPosition, commandObject.yPosition);
 	} else if (command === moveset.up) {
-		upMove(tank, isLocal);
+		upMove(tank, isLocal, commandObject.xPosition, commandObject.yPosition);
 	} else if (command === moveset.upRelease) {
 		upRelease(tank, isLocal, commandObject.xPosition, commandObject.yPosition);
 	} else if (command === moveset.right) {
-		rightMove(tank, isLocal);
+		rightMove(tank, isLocal, commandObject.xPosition, commandObject.yPosition);
 	} else if (command === moveset.rightRelease) {
 		rightRelease(tank, isLocal, commandObject.xPosition, commandObject.yPosition);
 	} else if (command === moveset.down) {
-		downMove(tank, isLocal);
+		downMove(tank, isLocal, commandObject.xPosition, commandObject.yPosition);
 	}  else if (command === moveset.downRelease) {
 		downRelease(tank, isLocal, commandObject.xPosition, commandObject.yPosition);
 	} else if (command === moveset.enter) {
