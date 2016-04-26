@@ -580,9 +580,6 @@ function createWall() {
     
     // NUBMER 1 wall
     for (var i = 0; i < 4; i++) {
-	//let wall = g.sprite("../images/wall.jpg");
-	//let wall =  g.rectangle(tankA.width,tankA.width, "brown");
-
 
 	wall =  g.rectangle(tankA.width,tankA.width, "#644242");
 	wall.anchor.x = 0.5;
@@ -591,9 +588,6 @@ function createWall() {
 
 	console.log("first_wall x" + i + " is " + x);
 	
-	// avoding collision
-
-	// let y = g.randomInt(0,0)
 	let y = (1/4*canvasHeight) + tankA.width * i;
 
 	console.log("first_wall y" + i + " is " + y);
@@ -605,27 +599,27 @@ function createWall() {
 	let tree_core = g.sprite("../images/wall1.jpg");
 
 	tree_core.width = tankA.width;
-	tree_core.height = tankA.height;
+	tree_core.height = tankA.width;
 	
 	tree_core.anchor.x = 0.5;
 	tree_core.anchor.y = 0.5;
 	
 	tree_core.x = x;
 	tree_core.y = y;
+	
     }
 
     // symmetric one
     for (var i = 0; i < 4; i++) {
-	//let wall = g.sprite("../images/wall.jpg");
-	//let wall =  g.rectangle(tankA.width,tankA.width, "brown");
+	
 	wall =  g.rectangle(tankA.width,tankA.width, "#644242");
-	//wall.setPivot(0.5,0.5);
+	
 	wall.anchor.x = 0.5;
 	wall.anchor.y = 0.5;
 	let x = canvasWidth - 1/4*canvasWidth;
 	// avoding collision
 	console.log("mirror_wall x" + i + " is " + x);
-	// let y = g.randomInt(0,0);
+	
 	let y = (canvasHeight - 1/4*canvasHeight) - tankA.width* i;
 
 	console.log("mirror_wall y" + i + " is " + y);
@@ -637,7 +631,7 @@ function createWall() {
 	let tree_core = g.sprite("../images/wall1.jpg");
 
 	tree_core.width = tankA.width;
-	tree_core.height = tankA.height;
+	tree_core.height = tankA.width;
 	
 	tree_core.anchor.x = 0.5;
 	tree_core.anchor.y = 0.5;
@@ -646,5 +640,7 @@ function createWall() {
 	tree_core.y = y;
     }
 
+    console.log("tankA.x: " + tankA.x + " tankA.y: " + tankA.y + " tankB.x: " + tankB.x + " tankB.y: " + tankB.y);
+    
 }
 
