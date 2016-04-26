@@ -1,6 +1,6 @@
 "use strict";
 
-var thingsToLoad = ["../images/wall.jpg","../sounds/explosion.mp3","../images/dynamite.png","../images/explorer.png","../fonts/emulogic.ttf","../images/dungeon.png","../images/explosion.jpeg","../images/blob.png","../images/door.png","../images/bunny.png","../sounds/launch_missile.mp3","../sounds/missile_heat.mp3","../sounds/normal_bullets.mp3","../sounds/bullets_hit.mp3","../images/up.png","../images/bullet_croped.png","../images/smoke.png","../images/debris.png","../images/monster_boss.png","../sounds/missile_reloading.wav","../images/start_button.png","../images/restart_button.png","../images/old_map2.jpg","../images/wall1.jpg" ];
+var thingsToLoad = ["../images/wall.jpg","../sounds/explosion.mp3","../images/dynamite.png","../images/explorer.png","../fonts/emulogic.ttf","../images/dungeon.png","../images/explosion.jpeg","../images/blob.png","../images/door.png","../images/bunny.png","../sounds/launch_missile.mp3","../sounds/missile_heat.mp3","../sounds/normal_bullets.mp3","../sounds/bullets_hit.mp3","../images/up.png","../images/bullet_croped.png","../images/smoke.png","../images/debris.png","../images/monster_boss.png","../sounds/missile_reloading.wav","../images/start_button.png","../images/restart_button.png"];
 
 
 // Change that to nopt to be hardcoded!!!
@@ -77,11 +77,6 @@ function start() {
 
 function setup() {
 
-    background = g.sprite("../images/old_map2.jpg");
-    background.width = canvasWidth;
-    background.height = canvasHeight;
-
-    
     console.log("g.canvas.width: " + g.canvas.width + " g.canvas.height is " + g.canvas.height);
     
     tankA = g.sprite("../images/user_tank_ed1.png");
@@ -547,7 +542,7 @@ function fire(tank) {
 		    fire_bullet.rotation = tank.rotation;
 		    */
 
-		    fire_bullet = g.circle(15,"#ad0606");
+		    fire_bullet = g.circle(15,"#c36bc3");
 		    return fire_bullet;
 		});
 	tank.missle_reloadFinish_flag = false;
@@ -569,7 +564,7 @@ function fire(tank) {
 	g.shoot(tank,tank.rotation - Math.PI/2,0,-5*tank.height,g.stage,3,bullets,
 		function() {
 
-		    return g.circle(10,"#c43714");
+		    return g.circle(10,"#4082ad");
 		});
 
 	normal_bullets_launchSound.play();
@@ -577,13 +572,14 @@ function fire(tank) {
 }
 function createWall() {
     walls = [];
+
+
+    console.log("g.stage.width is " + g.stage.width + " g.stage.height is" + g.stage.height);
     
     // NUBMER 1 wall
     for (var i = 0; i < 4; i++) {
 	//let wall = g.sprite("../images/wall.jpg");
 	//let wall =  g.rectangle(tankA.width,tankA.width, "brown");
-
-
 	wall =  g.rectangle(tankA.width,tankA.width, "#644242");
 	wall.anchor.x = 0.5;
 	wall.anchor.y = 0.5;
@@ -602,16 +598,6 @@ function createWall() {
 	wall.y = y
 	walls.push(wall);
 
-	let tree_core = g.sprite("../images/wall1.jpg");
-
-	tree_core.width = tankA.width;
-	tree_core.height = tankA.height;
-	
-	tree_core.anchor.x = 0.5;
-	tree_core.anchor.y = 0.5;
-	
-	tree_core.x = x;
-	tree_core.y = y;
     }
 
     // symmetric one
@@ -634,16 +620,6 @@ function createWall() {
 	wall.y = y
 	walls.push(wall);
 
-	let tree_core = g.sprite("../images/wall1.jpg");
-
-	tree_core.width = tankA.width;
-	tree_core.height = tankA.height;
-	
-	tree_core.anchor.x = 0.5;
-	tree_core.anchor.y = 0.5;
-	
-	tree_core.x = x;
-	tree_core.y = y;
     }
 
 }
