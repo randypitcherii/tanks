@@ -24,6 +24,13 @@ moveObject.gameID = gameID;
 moveObject.xPosition = -1;//initial value
 moveObject.yPosition = -1;//initial value
 
+//initialize game over object for sending game over to server
+var gameoverObject = {};
+gameoverObject.name = name;
+gameoverObject.gameID = gameID;
+gameoverObject.sourceMessage = "";//initial value
+gameoverObject.externalMessage = "";//initial value
+
 //initialize the websocket
 var socket = io();
 
@@ -46,6 +53,17 @@ socket.on('move', function(moveCommand) {
 
     //send the command to the tankMovement.js file for processing
     handleCommand(tankToMove, isLocal,moveCommand.move,  moveCommand);
+});
+
+//create socket game over handler
+socket.on('gameover', function(gameoverObject) {
+    if (gameoverObject.name === name) {
+        //game over came from local game instance
+        g.state = end(gameoverObject.sourceMessage);  
+    } else {
+        //opponent sent game over
+        g.state = end(gameoverObject.externalMessage);  
+    }
 });
 
 /**

@@ -51,7 +51,10 @@ io.on('connection', function(socket) {
 
     socket.on('move', function(moveObject) {
         io.to(moveObject.gameID).emit('move', moveObject);
-        console.log(moveObject.name + " sent: " + moveObject.move);
+    });
+
+    socket.on('gameover', function(gameoverObject) {
+        io.to(gameoverObject.gameID).emit('gameover', gameoverObject);
     });
 });
 
