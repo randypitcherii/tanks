@@ -8,15 +8,13 @@ window.addEventListener("beforeunload", function (event) {
 });
 
 // Change that to nopt to be hardcoded!!!
-var canvasHeight = 620;
-var canvasWidth = 620;
+var canvasHeight = 512;
+var canvasWidth = 512;
 var backgroundWidth = 512;
 var backgroundHeight = 512;
-var g = hexi(canvasWidth, canvasHeight, start, thingsToLoad, load);
+var g = hexi(canvasWidth, canvasHeight, setup, thingsToLoad, load);
 
-g.scaleToWindow();
 g.start();
-
 
 var background = undefined,
     tankA = undefined,
@@ -55,31 +53,22 @@ var background = undefined,
     a_rect = undefined,
     b_rect = undefined;
 
+updateCanvasSize();
+$(window).resize(updateCanvasSize);
+
+//adds mobile controls
+function updateCanvasSize() {
+    canvasHeight = $(window).height() - 2 * $("#changeControlsButton").height();
+    canvasWidth = $(window).width() - 2 * $("#changeControlsButton").height();
+
+    var minDimension = Math.min(canvasHeight, canvasWidth);
+
+    $("canvas").height(minDimension).width(minDimension).addClass("center-block");
+}
 
 function load() {
     g.loadingBar();
 }
-
-// start here
-function start() {
-    //load the start button
-    start_button = g.button(["../images/start_button.png"]);
-    start_button.visible = true;
-    console.log(start_button.width);
-    g.stage.putCenter(start_button, g.stage.width / 2 - start_button.width / 2, g.stage.height / 2);
-
-    /*
-       When the user clicks it goes to the setup place!
-     */
-    start_button.release = () => {
-        start_button.visible = false; // set it to be not visible!
-        start_button.interact = false; // dont want it to be interacted even though it is invisible
-        setup();
-    };
-
-}
-
-
 
 function setup() {
 
