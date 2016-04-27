@@ -61,11 +61,8 @@ module.exports = function(app, passport) {
 
 	//see available games (make sure they're logged in)
 	app.get('/ongoingGames', isLoggedIn, function(req, res) {
-		req.user.activeGame = false;
-		req.user.save(function(err) {
-			res.render('ongoingGames.ejs', {
-				user : req.user, //get the user out of session and pass to template
-			});
+		res.render('ongoingGames.ejs', {
+			user : req.user, //get the user out of session and pass to template
 		});
 	});
 

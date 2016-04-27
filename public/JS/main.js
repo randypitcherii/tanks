@@ -2,6 +2,10 @@
 
 var thingsToLoad = ["../images/switch_ammo_button.png", "../images/right_arrow.png", "../images/left_arrow.png", "../images/down_arrow.png", "../images/up_arrow.png", "../images/wall.jpg", "../sounds/explosion.mp3", "../images/dynamite.png", "../images/explorer.png", "../fonts/emulogic.ttf", "../images/dungeon.png", "../images/explosion.jpeg", "../images/blob.png", "../images/door.png", "../images/bunny.png", "../sounds/launch_missile.mp3", "../sounds/missile_heat.mp3", "../sounds/normal_bullets.mp3", "../sounds/bullets_hit.mp3", "../images/up.png", "../images/bullet_croped.png", "../images/smoke.png", "../images/debris.png", "../images/monster_boss.png", "../sounds/missile_reloading.wav", "../images/start_button.png", "../images/restart_button.png", "../images/old_map2.jpg", "../images/wall1.jpg"];
 
+//establish an exit listener to remove this as an active game on exit
+window.addEventListener("beforeunload", function (event) {
+  $.get("/logout");
+});
 
 // Change that to nopt to be hardcoded!!!
 var canvasHeight = 620;
