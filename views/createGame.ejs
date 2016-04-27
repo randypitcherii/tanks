@@ -30,11 +30,11 @@
                 <h1 hidden id="currentUser"><%= user.username %></h1>
                 <h1 hidden id="gameID"><%= user.username %></h1>
             </div>
-            <div class="col-sm-8 hidden-xs">
+            <div class="col-sm-8 hidden-xs hidden-sm">
                 <a class="btn btn-lg btn-danger pull-right" href="/endGame">End game</a>
             </div>
-            <div id="mobileIndicator" class="col-sm-8 visible-xs">
-                <a class="btn btn-lg btn-danger pull-right" href="/endGame">End game</a>
+            <div id="mobileIndicator" class="col-sm-8 visible-xs visible-sm">
+                <button class="btn btn-lg btn-danger pull-right" onclick="location.href='/endGame'">End game</button>
             </div>
         </div>
     </div>
