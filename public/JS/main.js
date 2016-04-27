@@ -25,11 +25,16 @@ $(document).ready(function () {
 
     //create and begin game
     g = hexi(canvasWidth, canvasHeight, setup, thingsToLoad, load);
-    g.start();
 
-    //make game responsive to screen size
-    updateCanvasSize();
-    $(window).resize(updateCanvasSize);
+    if ($("#mobileIndicator").is(":visible")) {
+        g.scaleToWindow();
+    } else {
+        //make game responsive to screen size if desktop
+        updateCanvasSize();
+        $(window).resize(updateCanvasSize);
+    }
+
+    g.start();
 });
 
 var background = undefined,
