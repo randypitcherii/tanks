@@ -19,7 +19,7 @@ var g;
 //wait for page to load, then begin 
 $(document).ready(function () {
     //check if is mobile screen for displaying mobile controls
-    if ($(".mobileIndicator").is(":visible")) {
+    if ($("#mobileIndicator").is(":visible")) {
         canvasHeight = 620;
     }
 
@@ -50,14 +50,10 @@ var background = undefined,
     missile_reloading_sound = undefined,
     fire_bullet = undefined,
     fire_bullets = undefined,
-    tankA_outerBar = undefined,
-    tankA_innerBar = undefined,
     healthBar_tankA = undefined,
     tankB_outerBar = undefined,
     tankB_innerBar = undefined,
     healthBar_tankB = undefined,
-    tankB_outerBar = undefined,
-    tankB_innerBar = undefined,
     tankA_outerBar = undefined,
     tankA_innerBar = undefined,
     gameOverMessage = undefined,
@@ -138,7 +134,7 @@ function setup() {
 
     //creating the health bar for tankB
     tankB_outerBar = g.rectangle(100, 16, "#3a312e"),
-        tankB_innerBar = g.rectangle(100, 16, "#f26946");
+    tankB_innerBar = g.rectangle(100, 16, "#f26946");
 
     healthBar_tankB = g.group(tankB_outerBar, tankB_innerBar);
     healthBar_tankB.inner = tankB_innerBar;

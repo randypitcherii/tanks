@@ -20,40 +20,39 @@
         canvas {
             margin: 15px;
         }
-        .mobileIndicator {
-            width: 1px;
-            height: 1px;
-        }
     </style>
 </head>
 <body>
     <div class="container-fluid row">
-    <div class="col-sm-10 col-sm-offset-1 row">
-        <div class="col-sm-4">
-            <h1 id="gameTitle"><%= user.username %>'s game</h1>
-            <h1 hidden id="currentUser"><%= user.username %></h1>
-            <h1 hidden id="gameID"><%= user.username %></h1>
+        <div class="col-sm-10 col-sm-offset-1 row">
+            <div class="col-sm-4">
+                <h1 id="gameTitle"><%= user.username %>'s game</h1>
+                <h1 hidden id="currentUser"><%= user.username %></h1>
+                <h1 hidden id="gameID"><%= user.username %></h1>
+            </div>
+            <div class="col-sm-8 hidden-xs">
+                <a class="btn btn-lg btn-danger pull-right" href="/endGame">End game</a>
+            </div>
+            <div id="mobileIndicator" class="col-sm-8 visible-xs">
+                <a class="btn btn-lg btn-danger pull-right" href="/endGame">End game</a>
+            </div>
         </div>
-        <div class="col-sm-8">
-            <a class="btn btn-lg btn-danger pull-right" href="/endGame">End game</a>
-        </div>
-    </div>
     </div>
 
-    <div class="mobileIndicator hidden-md-up"></div>
+    <div id="mobileIndicator" class="hidden-md-up"></div>
 
     <div class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <a href="/endGame" class="close"><span aria-hidden="true">&times;</span></a>
-                    <h4 class="modal-title">Game over!</h4>
+                    <h2 class="modal-title">Game over!</h2>
                 </div>
-                <div class="modal-body">
-                <p id="modalText"></p>
+                <div class="modal-body text-center">
+                <h3 id="modalText"></h3>
                 </div>
                 <div class="modal-footer">
-                <a href="/endGame" class="btn btn-danger btn-lg">Close</a>
+                    <a href="/endGame" class="btn btn-danger btn-lg">Close</a>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
