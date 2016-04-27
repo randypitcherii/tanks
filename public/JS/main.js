@@ -350,48 +350,91 @@ function setup() {
 }
 
 function play() {
-    //console.log("the rotation in playing mode " + turretA.rotation);
-
-    /*
-    let tankA_wall_collision = g.hit(tankA, walls, true, false, false,
-                     function(collision, platform) {
-                     if (collision == "right") {
-                         //tankA.vx = 0;
-                     } else if (collision == "left") {
-                         //tankA.vy = 0;
-                     }
-                     console.log("collsiion side is " + collision);
-                     }
-    );
-    let tankB_wall_collision = g.hit(tankB, walls, true, false, false,
-                     function(collision, platform) {
-                     if (collision == "right") {
-                         //tankB.vx = 0;
-                     } else if (collision == "left") {
-                         //tankB.vy = 0;
-                     }
-                     console.log("collsiion side is " + collision);
-                     }
-    );
-    */
 
 
-    /*
-        walls = walls.filter(function (wall) {
-        console.log("filter walls");
-        
-        if (g.hitTestRectangle(tankA,wall)) {
-            tankA.vx = 0;
-            tankA.vy = 0;
-        }
-        });
-        
-    */
-    /*
-        console.log("tankA.x: " + tankA.x + " tankA.y: " + tankA.y + " tankB.x: " + tankB.x + " tankB.y: \
-    " + tankB.y);
-    */
+    walls = walls.filter(function (wall) {
+	//console.log("filter walls");
+	
+	var b_rect = {}; 
 
+	if (tankB.rotation  === 3.14 || tankB.rotation === 0 || tankB.rotation === Math.PI) { //up or down
+	    b_rect = g.rectangle(tankB.width, tankB.height, "red"); 
+	    b_rect.x = tankB.x - tankB.width/2;
+	    b_rect.y = tankB.y - tankB.height/2;
+	} else {
+	    b_rect = g.rectangle(tankB.height, tankB.width, "red"); 
+	    b_rect.x = tankB.x - tankB.height/2;
+	    b_rect.y = tankB.y - tankB.width/2;
+	}
+	b_rect.visible = false;
+
+	var a_rect = {}; 
+
+	if (tankA.rotation  === 3.14 || tankA.rotation === 0 || tankA.rotation === Math.PI) { //up or down
+	    a_rect = g.rectangle(tankA.width, tankA.height, "red"); 
+	    a_rect.x = tankA.x - tankA.width/2;
+	    a_rect.y = tankA.y - tankA.height/2;
+	} else {
+	    a_rect = g.rectangle(tankA.height, tankA.width, "red"); 
+	    a_rect.x = tankA.x - tankA.height/2;
+	    a_rect.y = tankA.y - tankA.width/2;
+	}
+	a_rect.visible = false;
+
+	if (g.hitTestRectangle(a_rect, wall)) {
+	    //console.log("A hit wall");
+	    if (tankA.rotation === 0) { //up
+		//console.log("A hit up wall");
+		tankA.vx = 0;
+		tankA.vy = 0;
+		tankA.y = tankA.y + 5; 
+	    } else if (tankA.rotation === Math.PI) { // down
+		//console.log("A hit down wall");
+		tankA.vx = 0;
+		tankA.vy = 0;
+		tankA.y = tankA.y - 5; 
+	    } else if (tankA.rotation === 0.5*Math.PI) { // right
+		//console.log("A hit right wall");
+		tankA.vx = 0;
+		tankA.vy = 0;
+		tankA.x = tankA.x - 5; 
+	    } else if (tankA.rotation === 270/180*Math.PI) { // left
+		//console.log("A hit left wall");
+		tankA.vx = 0;
+		tankA.vy = 0;
+		tankA.x = tankA.x + 5; 
+	    } else {
+		//console.log("A hit NO wall");
+	    }
+	}
+
+	if (g.hitTestRectangle(b_rect, wall)) {
+	    //console.log("B hit wall");
+	    if (tankB.rotation === 0) { //up
+		tankB.vx = 0;
+		tankB.vy = 0;
+		tankB.y = tankB.y + 5; 
+	    } else if (tankB.rotation === Math.PI) { // down
+		tankB.vx = 0;
+		tankB.vy = 0;
+		tankB.y = tankB.y - 5; 
+	    } else if (tankB.rotation === 0.5*Math.PI) { // right
+		tankB.vx = 0;
+		tankB.vy = 0;
+		tankB.x = tankB.x - 5; 
+	    } else if (tankB.rotation === 270/180*Math.PI) { // left
+		tankB.vx = 0;
+		tankB.vy = 0;
+		tankB.x = tankB.x + 5; 
+	    }
+	}
+	g.remove(b_rect);
+	g.remove(a_rect);
+	
+	return true; // not remove any wall. yet...
+    });
+    
+    
     g.move(tankA);
     g.move(tankB);
     //g.move(bullets); 
@@ -764,9 +807,6 @@ function createWall() {
 
     // NUBMER 1 wall
     for (var i = 0; i < 4; i++) {
-        //let wall = g.sprite("../images/wall.jpg");
-        //let wall =  g.rectangle(tankA.width,tankA.width, "brown");
-
 
         wall = g.rectangle(tankA.width, tankA.width, "#644242");
         wall.anchor.x = 0.5;
@@ -777,7 +817,6 @@ function createWall() {
 
         // avoding collision
 
-        // let y = g.randomInt(0,0)
         let y = (1 / 4 * backgroundHeight) + tankA.width * i;
 
         console.log("first_wall y" + i + " is " + y);
@@ -800,16 +839,15 @@ function createWall() {
 
     // symmetric one
     for (var i = 0; i < 4; i++) {
-        //let wall = g.sprite("../images/wall.jpg");
-        //let wall =  g.rectangle(tankA.width,tankA.width, "brown");
+
         wall = g.rectangle(tankA.width, tankA.width, "#644242");
-        //wall.setPivot(0.5,0.5);
+        
         wall.anchor.x = 0.5;
         wall.anchor.y = 0.5;
         let x = backgroundWidth - 1 / 4 * backgroundWidth;
         // avoding collision
         console.log("mirror_wall x" + i + " is " + x);
-        // let y = g.randomInt(0,0);
+        
         let y = (backgroundHeight - 1 / 4 * backgroundHeight) - tankA.width * i;
 
         console.log("mirror_wall y" + i + " is " + y);
