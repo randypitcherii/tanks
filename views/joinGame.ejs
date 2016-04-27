@@ -29,7 +29,26 @@
             <a class="btn btn-lg btn-danger pull-right" href="/endGame">End game</a>
         </div>
     </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="/endGame" class="close"><span aria-hidden="true">&times;</span></a>
+                    <h4 class="modal-title">Game over!</h4>
+                </div>
+                <div class="modal-body">
+                <p id="modalText"></p>
+                </div>
+                <div class="modal-footer">
+                <a href="/endGame" class="btn btn-danger btn-lg">Close</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
     <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script src="JS/hexi.js"></script>
     <script src="JS/pixi.js"></script>
     <script src="JS/modules.js"></script>

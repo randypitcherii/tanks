@@ -628,17 +628,12 @@ function end(message) {
 
     g.pause();
 
-    gameOverMessage = g.text("", "48px Futura", "#ed3434", canvasWidth / 2 - 180, canvasHeight / 2 + 20);
+    $("#modalText").text(message);
 
-    gameOverMessage.content = message;
-    var restart_button = g.button(["../images/restart_button.png"]);
-    background.putCenter(restart_button, 0, 0);
-
-    restart_button.release = () => {
-        restart_button.visible = false;
-        restart_button.interact = false;
-        reset();
-    };
+    $('.modal').modal({
+        keyboard: false,
+        backdrop : "static"
+    });
 }
 
 
