@@ -1,6 +1,6 @@
 "use strict";
 
-var thingsToLoad = ["../images/switch_ammo_button.png", "../images/right_arrow.png", "../images/left_arrow.png", "../images/down_arrow.png", "../images/up_arrow.png", "../images/wall.jpg", "../sounds/explosion.mp3", "../images/dynamite.png", "../images/explorer.png", "../fonts/emulogic.ttf", "../images/dungeon.png", "../images/explosion.jpeg", "../images/blob.png", "../images/door.png", "../images/bunny.png", "../sounds/launch_missile.mp3", "../sounds/missile_heat.mp3", "../sounds/normal_bullets.mp3", "../sounds/bullets_hit.mp3", "../images/up.png", "../images/bullet_croped.png", "../images/smoke.png", "../images/debris.png", "../images/monster_boss.png", "../sounds/missile_reloading.wav", "../images/start_button.png", "../images/restart_button.png", "../images/old_map2.jpg", "../images/wall1.jpg"];
+var thingsToLoad = ["../images/switch_ammo_button.png", "../images/right_arrow.png", "../images/left_arrow.png", "../images/down_arrow.png", "../images/up_arrow.png", "../images/wall.jpg", "../sounds/explosion.mp3", "../images/dynamite.png", "../images/explorer.png", "../fonts/emulogic.ttf", "../images/dungeon.png", "../images/explosion.jpeg", "../images/blob.png", "../images/door.png", "../images/bunny.png", "../sounds/launch_missile.mp3", "../sounds/missile_heat.mp3", "../sounds/normal_bullets.mp3", "../sounds/bullets_hit.mp3", "../images/up.png", "../images/bullet_croped.png", "../images/smoke.png", "../images/debris.png", "../images/monster_boss.png", "../sounds/missile_reloading.wav", "../images/start_button.png", "../images/restart_button.png", "../images/old_map2.jpg", "../images/wall1.jpg", "../images/propeller.png"];
 
 //establish an exit listener to remove this as an active game on exit
 window.addEventListener("beforeunload", function (event) {
@@ -53,7 +53,8 @@ var background = undefined,
     walls = undefined,
     wall = undefined,
     a_rect = undefined,
-    b_rect = undefined;
+    b_rect = undefined,
+    propeller = undefined;
 
 
 function load() {
@@ -352,6 +353,9 @@ function setup() {
 function play() {
 
 
+    propeller.rotation += 0.05;
+
+    
     walls = walls.filter(function (wall) {
 	//console.log("filter walls");
 	
@@ -867,5 +871,29 @@ function createWall() {
         tree_core.x = x;
         tree_core.y = y;
     }
+
+    wall = g.rectangle(1.5 * tankA.width, 1.5 * tankA.width, "#644242");
+    
+    wall.anchor.x = 0.5;
+    wall.anchor.y = 0.5;
+    let x = backgroundWidth/2;
+    
+    let y = backgroundHeight/2;
+
+    wall.x = x;
+    wall.y = y
+    wall.visible = false;
+    walls.push(wall);
+
+    propeller = g.sprite("../images/propeller.png");
+
+    propeller.width = 1.5 * tankA.width;
+    propeller.height = 1.5 * tankA.width;
+
+    propeller.anchor.x = 0.5;
+    propeller.anchor.y = 0.5;
+
+    propeller.x = x;
+    propeller.y = y;
 
 }
