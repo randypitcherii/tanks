@@ -91,7 +91,6 @@ function setup() {
     background.width = backgroundWidth;
     background.height = backgroundHeight;
 
-
     console.log("g.canvas.width: " + g.canvas.width + " g.canvas.height is " + g.canvas.height);
 
     tankA = g.sprite("../images/user_tank_ed1.png");
@@ -150,18 +149,12 @@ function setup() {
     healthBar_tankA = g.group(tankA_outerBar, tankA_innerBar);
     healthBar_tankA.inner = tankA_innerBar;
 
-    //healthBar_tankA.x = g.canvas.width - tankA_outerBar.width;
-    //healthBar_tankA.y = g.canvas.height - tankA_outerBar.height;
-
-    //healthBar_tankB.x = g.canvas.width - tankB_outerBar.width;
-    //healthBar_tankB.y = 0;
     healthBar_tankA.x = background.width - tankA_outerBar.width;
     healthBar_tankA.y = background.height - tankA_outerBar.height;
 
 
     healthBar_tankB.x = background.width - tankB_outerBar.width;
     healthBar_tankB.y = 0;
-
 
 
     /*
@@ -183,128 +176,17 @@ function setup() {
     missile_hitSound.volume = 0.4;
     missile_reloading_sound = g.sound("../sounds/missile_reloading.wav");
 
-    createWall();
+    // to create walls
+    //createWall();
+    
     //initTankControls();    
 
 
     g.state = play;
-
-    /*
-       FOR MOBILE
-     */
-    /*
-       var forward_button = g.button([
-       "../images/up_arrow.png",
-       ]);
-       //forward_button.width = 40;
-       forward_button.height = 40;
-       forward_button.press = () => {
-       console.log("state is " + forward_button.state);
-       tankA.rotation = 0;
-       tankA.vy = -5;
-       tankA.vx = 0;
-       //console.log("the button width is " + forward_button.width);
-       };
-
-       forward_button.release = () => {
-       if (!down_button.isDown && tankA.vx === 0) {
-       tankA.vy = 0;
-
-       }
-       };
-
-       forward_button.setPosition(120,520);
-
-       var left_button = g.button([
-       "../images/left_arrow.png",
-       ]);
-       left_button.width = 78;
-       left_button.height = 40;
-       left_button.press = () => {
-       tankA.rotation = 270 / 180 * Math.PI;
-
-       //Change the player's velocity when the key is pressed.
-       tankA.vx = -5;
-       tankA.vy = 0;
-       console.log("state is " + left_button.state);
-       };
-
-       left_button.release = function() {
-       //If the left arrow has been released, and the right arrow isn't down,
-       //and the player isn't moving vertically:
-       //Stop the player.
-       if (!right_button.isDown && tankA.vy === 0) {
-       tankA.vx = 0;
-       }
-       };
-       left_button.setPosition(22,565);
-
-       var right_button = g.button([
-       "../images/right_arrow.png",
-       ]);
-       right_button.width = 78;
-       right_button.height = 40;
-       right_button.press = () => {
-       tankA.rotation = 0.5 * Math.PI;
-       tankA.vx = 5;
-       tankA.vy = 0;
-       console.log("state is " + right_button.state);
-       };
-
-       right_button.release = function () {
-       if (!right_button.isDown && tankA.vy === 0) {
-       tankA.vx = 0;
-       }
-       };
-
-       right_button.setPosition(208,565);
-
-       var down_button = g.button([
-       "../images/down_arrow.png",
-       ]);
-       down_button.width = 78;
-       down_button.height = 40;
-       down_button.press = () => {
-       tankA.rotation = Math.PI;
-       tankA.vy = 5;
-       tankA.vx = 0;
-       };
-
-       down_button.release = () => {
-       if (!forward_button.isDown && tankA.vx === 0) {
-       tankA.vy = 0;
-       }
-       };
-       //down_button.setPosition(80,g.stage.height - 60);
-       down_button.setPosition(120,565);
-
-       background.interact = true;
-
-       background.press = () => {
-       fire(tankA);
-       };
-
-       var change_ammo_button = g.button([
-       "../images/switch_ammo_button.png",
-       ]);
-       //change_ammo_button.width = 120;
-       change_ammo_button.height = 40;
-       change_ammo_button.press = () => {
-       console.log("u tapped the change ammo button");
-       tankA.switch_ammo_flag *= -1;
-       };
-       //right_button.setPosition(130,g.stage.height - 70);
-       change_ammo_button.setPosition(380,565);
-     */
-
-
-    /*
-       FOR MOBILE
-     */
     var forward_button = g.button([
 	"../images/up_arrow.png",
     ]);
-    //forward_button.width = 40;
+    
     forward_button.height = 40;
     forward_button.setPosition(120, 520);
 
@@ -358,11 +240,8 @@ function setup() {
 
 }
 
-function play() {
 
-
-    propeller.rotation += 0.05;
-
+function detect_walls_tanks_collision() {
 
     walls = walls.filter(function (wall) {
 	//console.log("filter walls");
@@ -446,7 +325,18 @@ function play() {
 	return true; // not remove any wall. yet...
     });
 
+}
 
+
+
+function play() {
+
+    // to make the propeller in middle rotate
+    // propeller.rotation += 0.05;
+
+    //to detect collistion between walls and tanks
+    //detect_walls_tanks_collision();
+    
     g.move(tankA);
     g.move(tankB);
     //g.move(bullets); 
@@ -548,7 +438,13 @@ function play() {
 	    //Remove the bullet from the `bullets` array
 	    return false;
 	} else {
+	    g.remove(a_rect);
+	    g.remove(b_rect);	
+	}
 
+	//to enabe walls and bullets collision instead of last else statement:
+	/*
+	else {
 	    let to_remove = true;
 	    walls.filter(function (wall) {
 		if (g.hitTestRectangle(wall, bullet)) {
@@ -560,12 +456,12 @@ function play() {
 	    g.remove(a_rect);
 	    g.remove(b_rect);
 	    return to_remove;
-
 	}
-
+	*/
+	
 	//If the bullet hasn't hit the edge of the screen,
 	//keep it in the `bullets` array
-	//return true;
+	return true;
     });
 
 
@@ -658,6 +554,13 @@ function play() {
 	    //Remove the bullet from the `bullets` array
 	    return false;
 	} else {
+	    g.remove(a_rect);
+	    g.remove(b_rect);
+	}
+
+	//to enable walls and bullets collision instead of last else statement:
+	/*
+	else {
 	    let to_remove = true;
 	    walls.filter(function (wall) {
 		if (g.hitTestRectangle(wall, fire_bullet)) {
@@ -666,15 +569,16 @@ function play() {
 		}
 		return true;
 	    });
-
+	    
 	    g.remove(a_rect);
 	    g.remove(b_rect);
 	    return to_remove;
 	}
+	*/
 
 	//If the bullet hasn't hit the edge of the screen,
 	//keep it in the `bullets` array
-	//return true;
+	return true;
     });
 
 
@@ -723,8 +627,7 @@ function reset() {
 
     healthBar_tankA.inner.width = 100;
     healthBar_tankB.inner.width = 100;
-    //g.stage.putBottom(tankA);
-    //g.stage.putTop(tankB);
+    
     /*
        Reinitialise the tank's position
      */
@@ -736,12 +639,14 @@ function reset() {
 
     tankA.rotation = 0;
     tankB.rotation = Math.PI;
-    g.remove(walls);
+
+
+    //g.remove(walls);
 
     g.remove(bullets);
     g.remove(fire_bullets);
 
-    createWall();
+    //createWall();
 
     g.state = play;
     g.resume();
@@ -799,6 +704,7 @@ function fire(tank) {
 	//dont know why * 6, just trial and error...
 	g.shoot(tank, tank.rotation - Math.PI / 2, 0, -7.5 * tank.height, g.stage, 7, fire_bullets,
 		function() {
+		    
 		    /*
 		       fire_bullet = g.sprite("../images/bullet_croped.png");
 		       fire_bullet.width = tank.width/2 ;
@@ -848,8 +754,6 @@ function createWall() {
 
 	console.log("first_wall x" + i + " is " + x);
 
-	// avoding collision
-
 	let y = (1 / 4 * backgroundHeight) + tankA.width * i;
 
 	console.log("first_wall y" + i + " is " + y);
@@ -878,7 +782,7 @@ function createWall() {
 	wall.anchor.x = 0.5;
 	wall.anchor.y = 0.5;
 	let x = backgroundWidth - 1 / 4 * backgroundWidth;
-	// avoding collision
+
 	console.log("mirror_wall x" + i + " is " + x);
 
 	let y = (backgroundHeight - 1 / 4 * backgroundHeight) - tankA.width * i;
@@ -901,6 +805,7 @@ function createWall() {
 	tree_core.y = y;
     }
 
+    // to make the spinning propeller in the middle
     wall = g.rectangle(1.5 * tankA.width, 1.5 * tankA.width, "#644242");
 
     wall.anchor.x = 0.5;
