@@ -4,17 +4,33 @@ var thingsToLoad = ["../images/switch_ammo_button.png", "../images/right_arrow.p
 
 //establish an exit listener to remove this as an active game on exit
 window.addEventListener("beforeunload", function (event) {
-  $.get("/logout");
+    $.get("/profile");
 });
 
-// Change that to nopt to be hardcoded!!!
+//global resizing variables
 var canvasHeight = 512;
 var canvasWidth = 512;
 var backgroundWidth = 512;
 var backgroundHeight = 512;
-var g = hexi(canvasWidth, canvasHeight, setup, thingsToLoad, load);
 
-g.start();
+//global game instance.
+var g;
+
+//wait for page to load, then begin 
+$(document).ready(function () {
+    //check if is mobile screen for displaying mobile controls
+    if ($(".mobileIndicator").is(":visible")) {
+        canvasHeight = 620;
+    }
+
+    //create and begin game
+    g = hexi(canvasWidth, canvasHeight, setup, thingsToLoad, load);
+    g.start();
+
+    //make game responsive to screen size
+    updateCanvasSize();
+    $(window).resize(updateCanvasSize);
+});
 
 var background = undefined,
     tankA = undefined,
@@ -54,13 +70,10 @@ var background = undefined,
     b_rect = undefined,
     propeller = undefined;
 
-updateCanvasSize();
-$(window).resize(updateCanvasSize);
-
 //adds mobile controls
 function updateCanvasSize() {
-    canvasHeight = $(window).height() - 2 * $("#changeControlsButton").height();
-    canvasWidth = $(window).width() - 2 * $("#changeControlsButton").height();
+    canvasHeight = 0.8*($(window).height() - 2 * $("#changeControlsButton").height());
+    canvasWidth = 0.8*($(window).width() - 2 * $("#changeControlsButton").height());
 
     var minDimension = Math.min(canvasHeight, canvasWidth);
 

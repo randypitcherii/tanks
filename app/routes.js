@@ -35,9 +35,12 @@ module.exports = function(app, passport) {
 
 	//go to profile (make sure they're logged in)
 	app.get('/profile', isLoggedIn, function(req, res) {
-		res.render('profile.ejs', {
-			user : req.user //get the user out of session and pass to template
-		});
+		req.user.activeGame = false;
+		req.user.save(function(err) {
+			res.render('profile.ejs', {
+				user : req.user //get the user out of session and pass to template
+			});
+		});	
 	});
 
 	//create game (make sure they're logged in)
